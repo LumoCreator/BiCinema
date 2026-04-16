@@ -3,192 +3,225 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BiCinema | Orange Experience</title>
-    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;800&display=swap" rel="stylesheet">
+    <title>BiCinema — Orange Premium</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            --bg: #0a0a0a;
-            --accent: #ff8800; /* Твой оранжевый цвет */
-            --accent-glow: rgba(255, 136, 0, 0.3);
-            --card-bg: #161616;
+            --primary: #ff8c00;
+            --primary-dark: #cc7000;
+            --bg: #0d0d0e;
+            --surface: #1a1a1c;
             --text: #ffffff;
-            --text-dim: #999999;
-            --glass: rgba(255, 255, 255, 0.05);
+            --text-secondary: #a0a0a5;
+            --card-radius: 18px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        * { 
-            box-sizing: border-box; 
-            margin: 0; 
+        * {
+            box-sizing: border-box;
+            margin: 0;
             padding: 0;
+            -webkit-font-smoothing: antialiased;
         }
 
         body {
-            font-family: 'Manrope', sans-serif;
+            font-family: 'Inter', sans-serif;
             background-color: var(--bg);
             color: var(--text);
-            line-height: 1.6;
+            line-height: 1.5;
             overflow-x: hidden;
         }
 
+        /* Общий контейнер */
         .container {
-            max-width: 1200px;
+            max-width: 1100px;
             margin: 0 auto;
-            padding: 20px;
+            padding: 0 20px;
         }
 
-        /* HEADER */
+        /* Хедер */
         header {
-            padding: 40px 0;
-            text-align: center;
+            padding: 30px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         .logo {
-            font-size: 2.5rem;
+            font-size: 2rem;
             font-weight: 800;
-            letter-spacing: -1px;
-            color: var(--accent);
+            color: var(--primary);
             text-transform: uppercase;
-            text-shadow: 0 0 20px var(--accent-glow);
+            letter-spacing: -1px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
-        /* КАТАЛОГ */
-        .grid {
+        .logo::before {
+            content: '●';
+            color: var(--primary);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.3; }
+            100% { opacity: 1; }
+        }
+
+        /* Главная сетка */
+        .catalog-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
             gap: 25px;
-            animation: fadeIn 0.8s ease;
+            padding-bottom: 50px;
         }
 
-        .card {
-            background: var(--card-bg);
-            border-radius: 15px;
+        .movie-card {
+            background: var(--surface);
+            border-radius: var(--card-radius);
             overflow: hidden;
             cursor: pointer;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            transition: var(--transition);
             border: 1px solid rgba(255,255,255,0.05);
+            position: relative;
         }
 
-        .card:hover {
+        .movie-card:hover {
             transform: translateY(-8px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5), 0 0 15px var(--accent-glow);
-            border-color: var(--accent);
+            border-color: var(--primary);
+            box-shadow: 0 12px 30px rgba(255, 140, 0, 0.2);
         }
 
-        .card img {
+        .movie-card .poster-wrapper {
             width: 100%;
-            height: 280px;
+            aspect-ratio: 2/3;
+            overflow: hidden;
+            background: #252527;
+        }
+
+        .movie-card img {
+            width: 100%;
+            height: 100%;
             object-fit: cover;
-            display: block;
+            transition: var(--transition);
         }
 
-        .card-body {
-            padding: 15px;
+        .movie-card:hover img {
+            transform: scale(1.05);
         }
 
-        .card-type {
-            font-size: 0.7rem;
-            font-weight: 800;
-            color: var(--accent);
-            text-transform: uppercase;
-            margin-bottom: 5px;
+        .card-details {
+            padding: 12px;
         }
 
-        .card-title {
-            font-size: 1rem;
+        .card-details h3 {
+            font-size: 0.95rem;
             font-weight: 600;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
         }
 
-        /* ЭКРАНЫ */
-        .screen {
-            display: none;
-            animation: fadeIn 0.4s ease-in-out;
+        .card-details span {
+            font-size: 0.75rem;
+            color: var(--primary);
+            font-weight: 700;
+            text-transform: uppercase;
         }
 
-        .active-screen {
+        /* Экраны */
+        .page {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .page.active {
             display: block;
         }
 
-        .back-link {
-            display: inline-block;
-            color: var(--text-dim);
-            text-decoration: none;
-            margin-bottom: 20px;
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Кнопка назад */
+        .btn-back {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
             font-weight: 600;
             cursor: pointer;
+            margin: 20px 0;
+            display: flex;
+            align-items: center;
+            gap: 6px;
             transition: 0.2s;
         }
 
-        .back-link:hover { color: var(--accent); }
+        .btn-back:hover { color: var(--primary); }
 
-        /* ДЕТАЛИ */
-        .details-wrapper {
+        /* Детали фильма */
+        .movie-hero {
             display: flex;
-            flex-wrap: wrap;
-            gap: 30px;
-            background: var(--card-bg);
+            gap: 40px;
+            background: var(--surface);
             padding: 30px;
-            border-radius: 20px;
-            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 24px;
+            margin-bottom: 40px;
         }
 
-        .details-poster {
-            flex: 0 0 300px;
-            max-width: 100%;
+        .hero-poster {
+            width: 280px;
+            border-radius: 16px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
         }
 
-        .details-poster img {
-            width: 100%;
-            border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
+        .hero-info { flex: 1; }
 
-        .details-info {
-            flex: 1;
-            min-width: 300px;
-        }
-
-        .details-info h2 {
+        .hero-info h1 {
             font-size: 2.2rem;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
+            font-weight: 800;
         }
 
-        .details-info p {
-            color: var(--text-dim);
+        .hero-info p {
+            color: var(--text-secondary);
             margin-bottom: 25px;
+            font-size: 1rem;
+            line-height: 1.6;
         }
 
-        .btn-play {
-            padding: 15px 40px;
-            background: var(--accent);
+        .btn-main {
+            padding: 16px 32px;
+            background: var(--primary);
             color: #000;
             border: none;
-            border-radius: 30px;
+            border-radius: 14px;
             font-size: 1rem;
             font-weight: 800;
             cursor: pointer;
-            transition: 0.3s;
+            transition: var(--transition);
         }
 
-        .btn-play:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 20px var(--accent-glow);
+        .btn-main:hover {
+            background: var(--primary-dark);
+            transform: scale(1.02);
         }
 
-        /* ПЛЕЕР */
-        .player-box {
-            margin-top: 30px;
+        /* Плеер */
+        .player-container {
             width: 100%;
+            aspect-ratio: 16/9;
             background: #000;
-            border-radius: 15px;
+            border-radius: 20px;
             overflow: hidden;
+            margin-top: 30px;
+            border: 2px solid rgba(255,255,255,0.05);
             position: relative;
-            /* Соотношение сторон 16:9 */
-            aspect-ratio: 16 / 9;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
         }
 
         iframe {
@@ -200,34 +233,33 @@
             border: none;
         }
 
-        /* СПИСОК СЕРИЙ */
-        .episodes-grid {
+        /* Сезоны и серии */
+        .series-layout {
             display: grid;
-            grid-template-columns: 200px 1fr;
-            gap: 20px;
+            grid-template-columns: 180px 1fr;
+            gap: 30px;
             margin-top: 20px;
         }
 
         .season-tabs {
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 8px;
         }
 
-        .season-tab {
-            padding: 12px;
-            background: var(--glass);
-            border-radius: 10px;
-            cursor: pointer;
+        .tab {
+            padding: 14px;
+            background: #252527;
+            border-radius: 12px;
             text-align: center;
+            cursor: pointer;
+            font-weight: 600;
             transition: 0.2s;
-            border: 1px solid transparent;
         }
 
-        .season-tab.active {
-            background: var(--accent);
+        .tab.active {
+            background: var(--primary);
             color: #000;
-            font-weight: 800;
         }
 
         .episode-list {
@@ -236,34 +268,32 @@
             gap: 10px;
         }
 
-        .episode-item {
+        .episode-btn {
+            padding: 20px;
+            background: #252527;
+            border-radius: 16px;
             display: flex;
             justify-content: space-between;
-            padding: 18px;
-            background: var(--glass);
-            border-radius: 12px;
+            align-items: center;
             cursor: pointer;
             transition: 0.2s;
         }
 
-        .episode-item:hover {
-            background: rgba(255,255,255,0.1);
-            transform: translateX(5px);
+        .episode-btn:hover {
+            background: #2e2e31;
+            padding-left: 25px;
         }
 
-        /* АНИМАЦИИ */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        .ep-name { font-weight: 600; }
+        .ep-meta { color: var(--text-secondary); font-size: 0.85rem; }
 
-        /* АДАПТИВНОСТЬ */
+        /* Адаптивность */
         @media (max-width: 768px) {
-            .details-wrapper { flex-direction: column; align-items: center; text-align: center; }
-            .details-poster { flex: 0 0 auto; width: 220px; }
-            .episodes-grid { grid-template-columns: 1fr; }
-            .season-tabs { flex-direction: row; overflow-x: auto; padding-bottom: 10px; }
-            .season-tab { min-width: 100px; }
+            .movie-hero { flex-direction: column; align-items: center; text-align: center; padding: 20px; }
+            .hero-poster { width: 200px; }
+            .series-layout { grid-template-columns: 1fr; }
+            .season-tabs { flex-direction: row; overflow-x: auto; }
+            .catalog-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
         }
     </style>
 </head>
@@ -274,32 +304,31 @@
         <div class="logo">BiCinema</div>
     </header>
 
-    <div id="screen-main" class="screen active-screen">
-        <div class="grid" id="catalog-grid"></div>
+    <div id="page-home" class="page active">
+        <div class="catalog-grid" id="catalog-container"></div>
     </div>
 
-    <div id="screen-detail" class="screen">
-        <div class="back-link" onclick="changeScreen('screen-main')">← Назад к списку</div>
-        <div class="details-wrapper">
-            <div class="details-poster">
-                <img id="det-img" src="" alt="">
-            </div>
-            <div class="details-info">
-                <h2 id="det-title"></h2>
-                <p id="det-desc"></p>
-                <button class="btn-play" id="main-action-btn">СМОТРЕТЬ</button>
+    <div id="page-detail" class="page">
+        <button class="btn-back" onclick="navigateTo('page-home')">← Каталог</button>
+        <div class="movie-hero">
+            <img id="detail-poster" src="" class="hero-poster" alt="">
+            <div class="hero-info">
+                <span id="detail-type" style="color:var(--primary); font-weight:800; font-size:0.8rem;"></span>
+                <h1 id="detail-title"></h1>
+                <p id="detail-desc"></p>
+                <button id="btn-action" class="btn-main">СМОТРЕТЬ</button>
                 
-                <div id="player-container" class="player-box" style="display: none;"></div>
+                <div id="player-wrapper" class="player-container" style="display:none;"></div>
             </div>
         </div>
     </div>
 
-    <div id="screen-episodes" class="screen">
-        <div class="back-link" onclick="changeScreen('screen-detail')">← К описанию</div>
-        <h2 id="ep-main-title" style="margin-bottom: 25px;"></h2>
-        <div class="episodes-grid">
-            <div class="season-tabs" id="season-nav"></div>
-            <div class="episode-list" id="ep-list"></div>
+    <div id="page-episodes" class="page">
+        <button class="btn-back" onclick="navigateTo('page-detail')">← Назад к описанию</button>
+        <h2 id="episodes-header-title" style="margin-bottom: 20px;"></h2>
+        <div class="series-layout">
+            <div id="season-nav" class="season-tabs"></div>
+            <div id="episode-container" class="episode-list"></div>
         </div>
     </div>
 </div>
@@ -309,7 +338,7 @@
       {
         "title": "Ниндзяго: Восстание Драконов",
         "poster": "https://raw.githubusercontent.com/LumoCreator/admincinema/refs/heads/main/IMG_1873.jpeg",
-        "desc": "Легендарная сага продолжается в новом мире. Объединенные земли нуждаются в новых героях Соре и Арине, которые под руководством Ллойда должны остановить надвигающуюся тьму.",
+        "desc": "Объединенные земли после Великого Слияния нуждаются в новых героях. Сора и Арин под руководством Ллойда должны овладеть силой драконов, чтобы остановить новую угрозу.",
         "type": "serial",
         "seasons": [
           {
@@ -317,7 +346,7 @@
             "episodes": [
               {
                 "name": "Шепчущий дракон",
-                "duration": "23:00",
+                "duration": "23 мин.",
                 "url": "https://drive.google.com/uc?export=download&id=1qM4uZ1F4V148msGgrzvJGd8cF2iSAHpt"
               }
             ]
@@ -328,57 +357,60 @@
 
     let currentItem = null;
 
-    function init() {
-        const grid = document.getElementById('catalog-grid');
-        grid.innerHTML = "";
+    function initCatalog() {
+        const container = document.getElementById('catalog-container');
+        container.innerHTML = "";
         DATABASE.forEach((item, index) => {
             const card = document.createElement('div');
-            card.className = 'card';
-            card.onclick = () => showDetails(index);
+            card.className = 'movie-card';
+            card.onclick = () => showDetail(index);
             card.innerHTML = `
-                <img src="${item.poster}" loading="lazy">
-                <div class="card-body">
-                    <div class="card-type">${item.type === 'serial' ? 'Сериал' : 'Фильм'}</div>
-                    <div class="card-title">${item.title}</div>
+                <div class="poster-wrapper">
+                    <img src="${item.poster}" loading="lazy">
+                </div>
+                <div class="card-details">
+                    <span>${item.type === 'serial' ? 'Сериал' : 'Фильм'}</span>
+                    <h3>${item.title}</h3>
                 </div>
             `;
-            grid.appendChild(card);
+            container.appendChild(card);
         });
     }
 
-    function showDetails(idx) {
-        currentItem = DATABASE[idx];
-        document.getElementById('det-title').innerText = currentItem.title;
-        document.getElementById('det-img').src = currentItem.poster;
-        document.getElementById('det-desc').innerText = currentItem.desc;
+    function showDetail(index) {
+        currentItem = DATABASE[index];
+        document.getElementById('detail-title').innerText = currentItem.title;
+        document.getElementById('detail-poster').src = currentItem.poster;
+        document.getElementById('detail-desc').innerText = currentItem.desc;
+        document.getElementById('detail-type').innerText = currentItem.type === 'serial' ? 'СЕРИАЛ' : 'ФИЛЬМ';
         
-        const playerCont = document.getElementById('player-container');
-        playerCont.style.display = 'none';
-        playerCont.innerHTML = "";
+        const playerWrap = document.getElementById('player-wrapper');
+        playerWrap.style.display = 'none';
+        playerWrap.innerHTML = "";
 
-        const btn = document.getElementById('main-action-btn');
+        const actionBtn = document.getElementById('btn-action');
         if(currentItem.type === 'movie') {
-            btn.innerText = "СМОТРЕТЬ ФИЛЬМ";
-            btn.onclick = () => startPlayer(currentItem.url);
+            actionBtn.innerText = "СМОТРЕТЬ ФИЛЬМ";
+            actionBtn.onclick = () => launchPlayer(currentItem.url);
         } else {
-            btn.innerText = "ВЫБРАТЬ СЕРИЮ";
-            btn.onclick = () => showEpisodes();
+            actionBtn.innerText = "ВЫБРАТЬ СЕРИЮ";
+            actionBtn.onclick = () => showEpisodes();
         }
 
-        changeScreen('screen-detail');
+        navigateTo('page-detail');
     }
 
     function showEpisodes() {
-        document.getElementById('ep-main-title').innerText = currentItem.title;
+        document.getElementById('episodes-header-title').innerText = currentItem.title;
         const nav = document.getElementById('season-nav');
         nav.innerHTML = "";
         
         currentItem.seasons.forEach((s, i) => {
             const tab = document.createElement('div');
-            tab.className = `season-tab ${i === 0 ? 'active' : ''}`;
+            tab.className = `tab ${i === 0 ? 'active' : ''}`;
             tab.innerText = `Сезон ${s.number}`;
             tab.onclick = () => {
-                document.querySelectorAll('.season-tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
                 tab.classList.add('active');
                 renderEpisodes(i);
             };
@@ -386,52 +418,58 @@
         });
         
         renderEpisodes(0);
-        changeScreen('screen-episodes');
+        navigateTo('page-episodes');
     }
 
     function renderEpisodes(sIdx) {
-        const list = document.getElementById('ep-list');
-        list.innerHTML = "";
+        const container = document.getElementById('episode-container');
+        container.innerHTML = "";
         currentItem.seasons[sIdx].episodes.forEach(ep => {
-            const item = document.createElement('div');
-            item.className = 'episode-item';
-            item.innerHTML = `<span>${ep.name}</span><span style="color:var(--text-dim)">${ep.duration}</span>`;
-            item.onclick = () => {
-                changeScreen('screen-detail');
-                startPlayer(ep.url);
+            const el = document.createElement('div');
+            el.className = 'episode-btn';
+            el.innerHTML = `
+                <span class="ep-name">${ep.name}</span>
+                <span class="ep-meta">${ep.duration} • ▶</span>
+            `;
+            el.onclick = () => {
+                navigateTo('page-detail');
+                launchPlayer(ep.url);
             };
-            list.appendChild(item);
+            container.appendChild(el);
         });
     }
 
-    function startPlayer(url) {
-        const cont = document.getElementById('player-container');
-        cont.style.display = 'block';
+    function launchPlayer(url) {
+        const wrapper = document.getElementById('player-wrapper');
+        wrapper.style.display = 'block';
         
         let id = "";
         if(url.includes('id=')) id = url.split('id=')[1].split('&')[0];
-        else id = url.split('/d/')[1].split('/')[0];
+        else if(url.includes('/d/')) id = url.split('/d/')[1].split('/')[0];
         
         const driveUrl = `https://drive.google.com/file/d/${id}/preview`;
 
-        cont.innerHTML = `
+        // Прямое указание атрибутов для ПОЛНОГО ЭКРАНА
+        wrapper.innerHTML = `
             <iframe 
                 src="${driveUrl}" 
-                allow="autoplay; fullscreen" 
-                allowfullscreen="true">
+                allow="autoplay; fullscreen; picture-in-picture" 
+                allowfullscreen="true"
+                webkitallowfullscreen="true"
+                mozallowfullscreen="true">
             </iframe>
         `;
         
-        setTimeout(() => cont.scrollIntoView({ behavior: 'smooth', block: 'center' }), 200);
+        wrapper.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
 
-    function changeScreen(screenId) {
-        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active-screen'));
-        document.getElementById(screenId).classList.add('active-screen');
+    function navigateTo(pageId) {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        document.getElementById(pageId).classList.add('active');
         window.scrollTo(0,0);
     }
 
-    window.onload = init;
+    window.onload = initCatalog;
 </script>
 
 </body>
