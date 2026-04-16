@@ -3,240 +3,278 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MyCinema - Онлайн Кинотеатр</title>
+    <title>MyCinema</title>
     <style>
         :root {
             --bg: #0f0f0f;
             --text: #ffffff;
-            --accent: #ffffff;
             --card-bg: #1e1e1e;
         }
         body {
-            font-family: 'Segoe UI', sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: var(--bg);
             color: var(--text);
             margin: 0;
             padding: 20px;
         }
-        h1 { text-align: center; }
+        .container { max-width: 1200px; margin: 0 auto; }
+        h1 { text-align: center; margin-bottom: 30px; }
+        
+        /* Сетка каталога */
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-            gap: 20px;
-            max-width: 1200px;
-            margin: 0 auto;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 25px;
         }
         .card {
             background: var(--card-bg);
-            border-radius: 10px;
+            border-radius: 12px;
             overflow: hidden;
             cursor: pointer;
-            transition: transform 0.2s;
+            transition: 0.3s;
         }
-        .card:hover { transform: scale(1.05); }
-        .card img { width: 100%; height: 260px; object-fit: cover; }
-        .card-info { padding: 10px; text-align: center; font-weight: bold; }
+        .card:hover { transform: translateY(-5px); }
+        .card img { width: 100%; height: 300px; object-fit: cover; background: #333; }
+        .card-info { padding: 15px; text-align: center; font-weight: bold; }
 
-        /* Экран деталей */
-        #detail-screen, #episodes-screen {
-            display: none;
-            max-width: 900px;
-            margin: 0 auto;
-            background: var(--card-bg);
-            padding: 30px;
-            border-radius: 15px;
-        }
-        .detail-header { display: flex; gap: 30px; }
-        .detail-poster { width: 250px; border-radius: 10px; }
-        .detail-info { flex: 1; }
-        .desc { margin: 20px 0; color: #ccc; line-height: 1.6; }
+        /* Экраны */
+        #detail-screen, #episodes-screen { display: none; }
         
-        .btn {
-            background: white;
-            color: black;
+        .back-btn { 
+            cursor: pointer; 
+            display: inline-block; 
+            margin-bottom: 20px; 
+            padding: 8px 15px; 
+            background: #333; 
+            border-radius: 5px; 
+        }
+
+        .detail-layout { display: flex; gap: 30px; flex-wrap: wrap; }
+        .detail-poster { width: 300px; border-radius: 10px; box-shadow: 0 0 20px rgba(0,0,0,0.5); }
+        .detail-content { flex: 1; min-width: 300px; }
+        
+        .desc { color: #aaa; line-height: 1.6; margin: 20px 0; }
+        
+        .btn-main {
+            background: #fff;
+            color: #000;
             border: none;
-            padding: 12px 25px;
-            border-radius: 25px;
+            padding: 15px 30px;
+            border-radius: 30px;
             font-weight: bold;
             cursor: pointer;
             font-size: 16px;
         }
 
         /* Список серий */
-        .episodes-container { display: flex; gap: 20px; margin-top: 20px; }
-        .seasons-list { width: 150px; border-right: 1px solid #444; }
-        .season-item { padding: 10px; cursor: pointer; }
-        .season-item.active { font-weight: bold; text-decoration: underline; }
-        .episodes-list { flex: 1; }
-        .episode-row {
+        .ep-container { display: flex; gap: 20px; margin-top: 30px; border-top: 1px solid #333; padding-top: 20px; }
+        .seasons-nav { width: 150px; }
+        .season-btn { padding: 10px; cursor: pointer; border-radius: 5px; margin-bottom: 5px; }
+        .season-btn.active { background: #fff; color: #000; }
+        
+        .ep-list { flex: 1; }
+        .ep-item {
             display: flex;
             justify-content: space-between;
             padding: 15px;
-            border-bottom: 1px solid #333;
+            background: #1a1a1a;
+            margin-bottom: 10px;
+            border-radius: 8px;
             cursor: pointer;
         }
-        .episode-row:hover { background: #2a2a2a; }
+        .ep-item:hover { background: #252525; }
 
-        video { width: 100%; border-radius: 10px; margin-top: 20px; background: black; }
-        .back-btn { margin-bottom: 20px; cursor: pointer; color: #aaa; }
+        /* Плеер */
+        .video-wrapper { margin-top: 30px; background: #000; border-radius: 15px; overflow: hidden; position: relative; padding-top: 56.25%; }
+        .video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
     </style>
 </head>
 <body>
 
-<div id="main-screen">
-    <h1>Моя Коллекция</h1>
-    <div class="grid" id="catalog"></div>
-</div>
+<div class="container">
+    <div id="main-screen">
+        <h1>Онлайн Кинотеатр</h1>
+        <div class="grid" id="catalog"></div>
+    </div>
 
-<div id="detail-screen">
-    <div class="back-btn" onclick="showMain()">← Назад</div>
-    <div class="detail-header">
-        <img id="det-poster" class="detail-poster" src="" alt="">
-        <div class="detail-info">
-            <h2 id="det-title"></h2>
-            <p class="desc" id="det-desc"></p>
-            <button class="btn" id="action-btn"></button>
+    <div id="detail-screen">
+        <div class="back-btn" onclick="showMain()">← Назад в каталог</div>
+        <div class="detail-layout">
+            <img id="det-poster" class="detail-poster" src="" alt="Постер">
+            <div class="detail-content">
+                <h2 id="det-title"></h2>
+                <p class="desc" id="det-desc"></p>
+                <button id="action-btn" class="btn-main"></button>
+                
+                <div id="player-area" style="display:none;" class="video-wrapper">
+                    </div>
+            </div>
         </div>
     </div>
-    <video id="player" controls style="display:none"></video>
-</div>
 
-<div id="episodes-screen">
-    <div class="back-btn" onclick="showDetail()">← К описанию</div>
-    <h2 id="ep-title-head"></h2>
-    <div class="episodes-container">
-        <div class="seasons-list" id="seasons-nav"></div>
-        <div class="episodes-list" id="episodes-nav"></div>
+    <div id="episodes-screen">
+        <div class="back-btn" onclick="showDetail()">← К описанию</div>
+        <h2 id="ep-title-header"></h2>
+        <div class="ep-container">
+            <div class="seasons-nav" id="seasons-nav"></div>
+            <div class="ep-list" id="ep-list"></div>
+        </div>
     </div>
 </div>
 
 <script>
-    // СЮДА ВСТАВЛЯТЬ СГЕНЕРИРОВАННЫЙ КОД
+    // ТВОЯ БАЗА ДАННЫХ
     const DATABASE = [
-        [
-  {
-    "title": "Ниндзяго: Восстание Драконов",
-    "poster": "https://raw.githubusercontent.com/LumoCreator/admincinema/refs/heads/main/IMG_1873.jpeg",
-    "desc": "Пока что 4 сезон.",
-    "type": "serial",
-    "seasons": [
       {
-        "number": "4",
-        "episodes": [
+        "title": "Ниндзяго: Восстание Драконов",
+        "poster": "https://raw.githubusercontent.com/LumoCreator/admincinema/refs/heads/main/IMG_1873.jpeg",
+        "desc": "Пока что 4 сезон.",
+        "type": "serial",
+        "seasons": [
           {
-            "name": "Шепчущий дракон",
-            "duration": "23 минуты",
-            "url": "https://drive.google.com/uc?export=download&id=1qM4uZ1F4V148msGgrzvJGd8cF2iSAHpt"
+            "number": "4",
+            "episodes": [
+              {
+                "name": "Шепчущий дракон",
+                "duration": "23 минуты",
+                "url": "https://drive.google.com/uc?export=download&id=1qM4uZ1F4V148msGgrzvJGd8cF2iSAHpt"
+              }
+            ]
           }
         ]
       }
-    ]
-  }
-]
-    ]; 
+    ];
 
     let currentItem = null;
 
+    // Инициализация каталога
     function init() {
         const catalog = document.getElementById('catalog');
+        catalog.innerHTML = "";
+        
         DATABASE.forEach((item, index) => {
             const card = document.createElement('div');
             card.className = 'card';
             card.onclick = () => openDetail(index);
+            
+            const title = item.title || "?";
+            const poster = item.poster || "https://via.placeholder.com/200x300?text=?";
+            
             card.innerHTML = `
-                <img src="${item.poster || '?'}" alt="">
-                <div class="card-info">${item.title || '?'}</div>
+                <img src="${poster}" alt="${title}">
+                <div class="card-info">${title}</div>
             `;
             catalog.appendChild(card);
         });
     }
 
+    // Открыть детали фильма/сериала
     function openDetail(index) {
         currentItem = DATABASE[index];
         document.getElementById('main-screen').style.display = 'none';
         document.getElementById('detail-screen').style.display = 'block';
         document.getElementById('episodes-screen').style.display = 'none';
         
-        document.getElementById('det-poster').src = currentItem.poster || '';
-        document.getElementById('det-title').innerText = currentItem.title || '?';
-        document.getElementById('det-desc').innerText = currentItem.desc || '?';
+        document.getElementById('det-title').innerText = currentItem.title || "?";
+        document.getElementById('det-poster').src = currentItem.poster || "";
+        document.getElementById('det-desc').innerText = currentItem.desc || "?";
         
         const btn = document.getElementById('action-btn');
-        const player = document.getElementById('player');
-        player.style.display = 'none';
-        player.src = '';
+        const playerArea = document.getElementById('player-area');
+        playerArea.style.display = 'none';
+        playerArea.innerHTML = ""; // Очистить плеер
 
         if (currentItem.type === 'movie') {
-            btn.innerText = 'Воспроизвести';
-            btn.onclick = () => {
-                player.style.display = 'block';
-                player.src = currentItem.url || '';
-                player.play();
-            };
+            btn.innerText = "Смотреть фильм";
+            btn.onclick = () => startPlayer(currentItem.url);
         } else {
-            btn.innerText = 'Выбрать сезон и серию';
+            btn.innerText = "Выбрать сезон и серию";
             btn.onclick = openEpisodes;
         }
     }
 
+    // Открыть список серий
     function openEpisodes() {
         document.getElementById('detail-screen').style.display = 'none';
         document.getElementById('episodes-screen').style.display = 'block';
-        document.getElementById('ep-title-head').innerText = currentItem.title;
-        renderSeasons();
-    }
-
-    function renderSeasons() {
+        document.getElementById('ep-title-header').innerText = currentItem.title;
+        
         const nav = document.getElementById('seasons-nav');
-        nav.innerHTML = '';
-        currentItem.seasons.forEach((s, i) => {
-            const div = document.createElement('div');
-            div.className = 'season-item';
-            div.innerText = `Сезон ${s.number || '?'}`;
-            div.onclick = () => renderEpisodes(i);
-            nav.appendChild(div);
+        nav.innerHTML = "";
+        
+        currentItem.seasons.forEach((season, sIdx) => {
+            const sBtn = document.createElement('div');
+            sBtn.className = 'season-btn' + (sIdx === 0 ? ' active' : '');
+            sBtn.innerText = `Сезон ${season.number || "?"}`;
+            sBtn.onclick = () => {
+                document.querySelectorAll('.season-btn').forEach(b => b.classList.remove('active'));
+                sBtn.classList.add('active');
+                renderEpisodes(sIdx);
+            };
+            nav.appendChild(sBtn);
         });
-        if (currentItem.seasons.length > 0) renderEpisodes(0);
+        
+        renderEpisodes(0);
     }
 
-    function renderEpisodes(sIndex) {
-        const nav = document.getElementById('episodes-nav');
-        nav.innerHTML = '';
-        const episodes = currentItem.seasons[sIndex].episodes;
-        episodes.forEach(ep => {
-            const row = document.createElement('div');
-            row.className = 'episode-row';
-            row.innerHTML = `
-                <span>${ep.name || '?'}</span>
-                <span style="color:#888">${ep.duration || '?'}</span>
+    // Отрисовать серии конкретного сезона
+    function renderEpisodes(sIdx) {
+        const list = document.getElementById('ep-list');
+        list.innerHTML = "";
+        
+        const season = currentItem.seasons[sIdx];
+        if (!season || !season.episodes) return;
+
+        season.episodes.forEach(ep => {
+            const item = document.createElement('div');
+            item.className = 'ep-item';
+            item.innerHTML = `
+                <span>${ep.name || "?"}</span>
+                <span style="color: #888;">${ep.duration || "?"}</span>
             `;
-            row.onclick = () => playVideo(ep.url);
-            nav.appendChild(row);
+            item.onclick = () => {
+                showDetail();
+                startPlayer(ep.url);
+            };
+            list.appendChild(item);
         });
     }
 
-    function playVideo(url) {
-        if (!url) { alert('Ссылка отсутствует!'); return; }
-        document.getElementById('episodes-screen').style.display = 'none';
-        document.getElementById('detail-screen').style.display = 'block';
-        const player = document.getElementById('player');
-        player.style.display = 'block';
-        player.src = url;
-        player.play();
+    // Запуск плеера (адаптация под Google Drive)
+    function startPlayer(url) {
+        if (!url) { alert("Ссылка не найдена!"); return; }
+        
+        const playerArea = document.getElementById('player-area');
+        playerArea.style.display = 'block';
+        
+        // Превращаем ссылку из uc?export в /preview для работы в плеере
+        let finalUrl = url;
+        if (url.includes('drive.google.com')) {
+            finalUrl = url.replace('uc?export=download&id=', 'file/d/')
+                          .replace('uc?id=', 'file/d/') + '/preview';
+        }
+
+        playerArea.innerHTML = `<iframe src="${finalUrl}" allow="autoplay" allowfullscreen></iframe>`;
+        
+        // Плавный скролл к плееру
+        playerArea.scrollIntoView({ behavior: 'smooth' });
     }
 
+    // Навигация назад
     function showMain() {
         document.getElementById('main-screen').style.display = 'block';
         document.getElementById('detail-screen').style.display = 'none';
-        document.getElementById('player').pause();
+        document.getElementById('player-area').innerHTML = ""; 
     }
 
     function showDetail() {
-        document.getElementById('episodes-screen').style.display = 'none';
         document.getElementById('detail-screen').style.display = 'block';
+        document.getElementById('episodes-screen').style.display = 'none';
     }
 
-    init();
+    // Запуск при загрузке
+    window.onload = init;
 </script>
+
 </body>
 </html>
