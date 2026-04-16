@@ -2,18 +2,17 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>BiCinema Premium</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>BiCinema | Smart View</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
     
     <style>
         :root {
             --accent: #ff8c00;
             --bg: #000000;
-            --surface: #111111;
+            --surface: #121212;
             --text: #ffffff;
-            --text-dim: #999999;
-            --radius: 16px;
+            --radius: 20px;
         }
 
         * { 
@@ -26,14 +25,15 @@
             font-family: 'Inter', sans-serif;
             background-color: var(--bg);
             color: var(--text);
-            line-height: 1.5;
-            -webkit-user-select: none;
+            overflow-x: hidden;
+            -webkit-text-size-adjust: 100%;
         }
 
         .container {
-            max-width: 1000px;
+            max-width: 900px;
             margin: 0 auto;
             padding: 0 15px;
+            transition: opacity 0.3s ease;
         }
 
         header {
@@ -46,13 +46,13 @@
             font-weight: 900;
             color: var(--accent);
             text-transform: uppercase;
-            letter-spacing: -1.5px;
+            letter-spacing: -1px;
         }
 
         /* КАТАЛОГ */
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
             gap: 20px;
             padding-bottom: 40px;
         }
@@ -62,25 +62,18 @@
             border-radius: var(--radius);
             overflow: hidden;
             cursor: pointer;
-            transition: 0.3s;
             border: 1px solid rgba(255,255,255,0.05);
+            transition: 0.2s;
         }
 
-        .card:active { transform: scale(0.96); }
-
-        .card img {
-            width: 100%;
-            aspect-ratio: 2/3;
-            object-fit: cover;
-            display: block;
-        }
-
-        .card-info { padding: 12px; }
+        .card:active { transform: scale(0.95); }
+        .card img { width: 100%; aspect-ratio: 2/3; object-fit: cover; display: block; }
+        .card-info { padding: 12px; text-align: center; }
         .card-title { font-size: 0.9rem; font-weight: 700; }
 
         /* ЭКРАНЫ */
-        .page { display: none; animation: fadeIn 0.4s ease; }
-        .page.active { display: block; }
+        .page { display: none; }
+        .page.active { display: block; animation: fadeIn 0.3s ease; }
 
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
@@ -89,89 +82,92 @@
             border: none;
             color: #fff;
             padding: 12px 20px;
-            border-radius: 10px;
+            border-radius: 12px;
             margin: 15px 0;
             font-weight: 700;
             cursor: pointer;
         }
 
         /* ДЕТАЛИ */
-        .detail-view {
+        .hero-layout {
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 25px;
         }
 
         .hero-poster {
             width: 100%;
-            max-width: 320px;
+            max-width: 280px;
             border-radius: var(--radius);
-            box-shadow: 0 10px 40px rgba(0,0,0,0.8);
             margin: 0 auto;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
         .hero-text h1 { font-size: 2rem; margin-bottom: 10px; }
-        .hero-text p { color: var(--text-dim); margin-bottom: 25px; }
+        .hero-text p { color: #888; margin-bottom: 25px; }
 
         .btn-main {
             width: 100%;
-            padding: 18px;
+            padding: 20px;
             background: var(--accent);
             border: none;
             border-radius: var(--radius);
             color: #000;
             font-weight: 900;
             font-size: 1rem;
-            text-transform: uppercase;
             cursor: pointer;
         }
 
-        /* ПЛЕЕР (ИСПРАВЛЕННЫЙ) */
-        .player-wrapper {
-            margin-top: 25px;
+        /* ПЛЕЕР: УМНЫЙ КОНТЕЙНЕР */
+        #player-box {
+            position: relative;
             width: 100%;
             background: #000;
             border-radius: var(--radius);
             overflow: hidden;
-            position: relative;
-            padding-top: 56.25%; /* 16:9 */
+            margin-top: 25px;
             border: 1px solid #222;
         }
+
+        /* Соотношение сторон по умолчанию */
+        .ratio-16-9 { padding-top: 56.25%; }
 
         iframe {
             position: absolute;
             top: 0; left: 0;
             width: 100%; height: 100%;
             border: none;
+            /* Убираем лишние тапы на iOS */
+            pointer-events: auto;
         }
 
-        /* СЕРИИ */
-        .ep-list {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            margin-top: 20px;
+        /* ФУЛЛСКРИН ПРИ ПОВОРОТЕ (LANDSCAPE) */
+        @media screen and (orientation: landscape) and (max-height: 500px) {
+            header, .btn-back, .hero-poster, .hero-text h1, .hero-text p {
+                display: none !important;
+            }
+            .container { padding: 0; max-width: 100%; }
+            #player-box {
+                position: fixed;
+                top: 0; left: 0;
+                width: 100vw; height: 100vh;
+                margin: 0; border: none; border-radius: 0;
+                z-index: 9999;
+            }
+            #player-box.ratio-16-9 { padding-top: 0; }
         }
 
+        /* СПИСОК СЕРИЙ */
+        .ep-list { margin-top: 20px; display: flex; flex-direction: column; gap: 10px; }
         .ep-row {
             background: var(--surface);
             padding: 18px;
-            border-radius: 12px;
+            border-radius: 15px;
             display: flex;
             justify-content: space-between;
-            align-items: center;
             cursor: pointer;
-            border: 1px solid transparent;
         }
-
-        .ep-row:active { border-color: var(--accent); background: #1a1a1a; }
-        .ep-name { font-weight: 700; }
-        .ep-time { color: var(--accent); font-weight: 900; font-size: 0.8rem; }
-
-        @media (min-width: 768px) {
-            .detail-view { flex-direction: row; gap: 40px; align-items: flex-start; }
-            .hero-poster { margin: 0; }
-        }
+        .ep-row:active { background: #1a1a1a; color: var(--accent); }
     </style>
 </head>
 <body>
@@ -185,19 +181,19 @@
 
     <div id="p-item" class="page">
         <button class="btn-back" onclick="nav('p-main')">← Назад</button>
-        <div class="detail-view">
+        <div class="hero-layout">
             <img id="m-img" src="" class="hero-poster" alt="">
             <div class="hero-text">
                 <h1 id="m-title"></h1>
                 <p id="m-desc"></p>
                 <button class="btn-main" id="m-btn">СМОТРЕТЬ</button>
-                <div id="player-container" class="player-wrapper" style="display: none;"></div>
+                <div id="player-box" class="ratio-16-9" style="display: none;"></div>
             </div>
         </div>
     </div>
 
     <div id="p-eps" class="page">
-        <button class="btn-back" onclick="nav('p-item')">← К описанию</button>
+        <button class="btn-back" onclick="nav('p-item')">← Описание</button>
         <h2 id="eps-title" style="margin-bottom: 20px;"></h2>
         <div class="ep-list" id="eps-list"></div>
     </div>
@@ -208,7 +204,7 @@
       {
         "title": "Ниндзяго: Восстание Драконов",
         "poster": "https://raw.githubusercontent.com/LumoCreator/admincinema/refs/heads/main/IMG_1873.jpeg",
-        "desc": "Миры слились воедино. Новые герои должны научиться силе стихий, чтобы спасти будущее от захватчиков.",
+        "desc": "Объединение миров принесло новые угрозы. Ллойд и новые ученики Сора и Арин вступают в битву за будущее.",
         "type": "serial",
         "seasons": [
           {
@@ -240,9 +236,9 @@
         document.getElementById('m-img').src = currentItem.poster;
         document.getElementById('m-desc').innerText = currentItem.desc;
         
-        const playerWrap = document.getElementById('player-container');
-        playerWrap.style.display = 'none';
-        playerWrap.innerHTML = "";
+        const box = document.getElementById('player-box');
+        box.style.display = 'none';
+        box.innerHTML = "";
 
         const btn = document.getElementById('m-btn');
         if(currentItem.type === 'movie') {
@@ -262,7 +258,7 @@
         currentItem.seasons[0].eps.forEach(ep => {
             const row = document.createElement('div');
             row.className = 'ep-row';
-            row.innerHTML = `<span class="ep-name">${ep.name}</span><span class="ep-time">${ep.time}</span>`;
+            row.innerHTML = `<b>${ep.name}</b><span>${ep.time}</span>`;
             row.onclick = () => { nav('p-item'); startPlayer(ep.url); };
             list.appendChild(row);
         });
@@ -270,8 +266,8 @@
     }
 
     function startPlayer(url) {
-        const wrap = document.getElementById('player-container');
-        wrap.style.display = 'block';
+        const box = document.getElementById('player-box');
+        box.style.display = 'block';
         
         let id = "";
         if(url.includes('id=')) id = url.split('id=')[1].split('&')[0];
@@ -279,18 +275,19 @@
         
         const finalUrl = `https://drive.google.com/file/d/${id}/preview`;
 
-        // КЛЮЧЕВОЙ МОМЕНТ: allow="fullscreen"
-        wrap.innerHTML = `
+        // playsinline=0 заставляет iOS использовать только фрейм без наслоений
+        box.innerHTML = `
             <iframe 
                 src="${finalUrl}" 
-                allow="autoplay; fullscreen; picture-in-picture; xr-spatial-tracking"
+                allow="autoplay; fullscreen"
                 allowfullscreen="true" 
                 webkitallowfullscreen="true" 
-                mozallowfullscreen="true">
+                mozallowfullscreen="true"
+                playsinline="0">
             </iframe>
         `;
         
-        setTimeout(() => wrap.scrollIntoView({ behavior: 'smooth', block: 'center' }), 300);
+        setTimeout(() => box.scrollIntoView({ behavior: 'smooth', block: 'center' }), 300);
     }
 
     function nav(id) {
@@ -300,6 +297,13 @@
     }
 
     window.onload = init;
+
+    // Слушатель изменения ориентации для iPhone
+    window.addEventListener("orientationchange", function() {
+        if (window.orientation === 90 || window.orientation === -90) {
+            console.log("Landscape mode activated");
+        }
+    }, false);
 </script>
 
 </body>
