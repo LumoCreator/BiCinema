@@ -3,287 +3,231 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LumoCinema Pro</title>
-    <link href="https://vjs.zencdn.net/8.10.0/video-js.css" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <title>LumoCinema — Premium Streaming</title>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;500;800&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            --bg: #050505;
+            --bg: #050506;
             --accent: #ff003c;
-            --accent-glow: rgba(255, 0, 60, 0.5);
-            --card-bg: #111111;
+            --card-bg: #111113;
             --glass: rgba(255, 255, 255, 0.03);
             --text-main: #ffffff;
-            --text-dim: #888888;
+            --text-dim: #88888e;
         }
 
-        * { box-sizing: border-box; outline: none; }
+        * { box-sizing: border-box; }
 
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Manrope', sans-serif;
             background-color: var(--bg);
             color: var(--text-main);
             margin: 0;
-            line-height: 1.5;
             overflow-x: hidden;
-        }
-
-        /* Задний фон с живыми частицами (визуально) */
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle at 50% 50%, #1a1a2e 0%, #050505 100%);
-            z-index: -1;
+            background-image: radial-gradient(circle at 50% -20%, #1e1e2e 0%, #050506 100%);
         }
 
         .container {
-            max-width: 1400px;
+            max-width: 1300px;
             margin: 0 auto;
             padding: 40px 20px;
         }
 
-        /* HEADER */
-        header {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-bottom: 60px;
-        }
-
+        /* LOGO */
         .logo {
-            font-size: 2.5rem;
+            font-size: 2.2rem;
             font-weight: 800;
-            letter-spacing: -2px;
-            text-transform: uppercase;
-            background: linear-gradient(45deg, #fff 30%, var(--accent));
+            text-align: center;
+            margin-bottom: 50px;
+            letter-spacing: -1.5px;
+            background: linear-gradient(90deg, #fff, var(--accent));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            filter: drop-shadow(0 0 10px var(--accent-glow));
+            animation: fadeInDown 0.8s ease;
         }
 
-        /* CATALOG GRID */
+        /* GRID */
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-            gap: 40px;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 35px;
+            animation: fadeInUp 1s ease;
         }
 
         .card {
-            position: relative;
             background: var(--card-bg);
             border-radius: 20px;
             overflow: hidden;
             cursor: pointer;
-            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
             border: 1px solid rgba(255,255,255,0.05);
+            position: relative;
         }
 
         .card:hover {
-            transform: scale(1.03) translateY(-10px);
+            transform: translateY(-10px) scale(1.02);
             border-color: var(--accent);
-            box-shadow: 0 15px 30px rgba(0,0,0,0.5), 0 0 20px var(--accent-glow);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6), 0 0 15px rgba(255, 0, 60, 0.2);
         }
 
         .card img {
             width: 100%;
-            height: 360px;
+            height: 330px;
             object-fit: cover;
-            transition: 0.5s;
+            transition: 0.4s;
         }
 
-        .card:hover img {
-            filter: brightness(0.6) blur(2px);
-        }
-
-        .card-overlay {
+        .card-info {
+            padding: 15px;
+            background: linear-gradient(0deg, rgba(0,0,0,0.9) 0%, transparent 100%);
             position: absolute;
-            inset: 0;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
-            padding: 20px;
-            background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, transparent 100%);
-            opacity: 0.8;
-            transition: 0.5s;
-        }
-
-        .card:hover .card-overlay { opacity: 1; }
-
-        .card-title {
-            font-size: 1.2rem;
-            font-weight: 700;
-            margin-bottom: 5px;
-        }
-
-        .card-type {
-            font-size: 0.8rem;
-            color: var(--accent);
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            bottom: 0; width: 100%;
         }
 
         /* SCREENS */
-        #detail-screen, #episodes-screen { display: none; animation: slideUp 0.6s ease-out; }
+        #detail-screen, #episodes-screen { display: none; animation: fadeIn 0.5s ease; }
 
-        .nav-link {
-            display: inline-flex;
-            align-items: center;
+        .btn-back {
             color: var(--text-dim);
-            text-decoration: none;
-            margin-bottom: 30px;
             cursor: pointer;
+            margin-bottom: 25px;
+            display: inline-block;
             transition: 0.3s;
         }
+        .btn-back:hover { color: #fff; transform: translateX(-5px); }
 
-        .nav-link:hover { color: #fff; transform: translateX(-5px); }
-
-        /* DETAIL VIEW */
-        .hero {
-            display: grid;
-            grid-template-columns: 350px 1fr;
-            gap: 60px;
+        /* DETAIL PAGE */
+        .detail-card {
+            display: flex;
+            gap: 50px;
             background: var(--glass);
-            padding: 50px;
-            border-radius: 40px;
+            padding: 40px;
+            border-radius: 30px;
             backdrop-filter: blur(20px);
             border: 1px solid rgba(255,255,255,0.05);
+            flex-wrap: wrap;
         }
 
-        .hero-poster {
-            width: 100%;
-            border-radius: 25px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-        }
-
-        .hero-info h2 { font-size: 3rem; margin: 0; }
-        .hero-info .desc { font-size: 1.1rem; color: #ccc; margin: 30px 0; max-width: 700px; }
-
-        .play-main-btn {
-            padding: 20px 50px;
-            background: var(--accent);
-            border: none;
-            color: #fff;
-            border-radius: 50px;
-            font-size: 1.2rem;
-            font-weight: 800;
-            cursor: pointer;
-            transition: 0.3s;
-            box-shadow: 0 10px 20px var(--accent-glow);
-        }
-
-        .play-main-btn:hover { transform: scale(1.05); box-shadow: 0 15px 30px var(--accent-glow); }
-
-        /* PLAYER CUSTOMIZATION */
-        .video-container {
-            margin-top: 50px;
-            border-radius: 30px;
-            overflow: hidden;
-            border: 2px solid rgba(255,255,255,0.1);
-            background: #000;
-        }
-
-        .video-js {
-            width: 100% !important;
-            height: auto !important;
-            aspect-ratio: 16/9;
-        }
-
-        /* EPISODES GRID */
-        .ep-grid {
-            display: grid;
-            grid-template-columns: 200px 1fr;
-            gap: 40px;
-            margin-top: 40px;
-        }
-
-        .season-tab {
-            padding: 20px;
-            background: var(--glass);
+        .detail-poster {
+            width: 320px;
             border-radius: 20px;
-            text-align: center;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+        }
+
+        .detail-info { flex: 1; min-width: 300px; }
+        .detail-info h2 { font-size: 2.8rem; margin: 0; }
+        .detail-info p { color: var(--text-dim); line-height: 1.7; margin: 25px 0; font-size: 1.1rem; }
+
+        .btn-play {
+            padding: 18px 45px;
+            background: #fff;
+            color: #000;
+            border: none;
+            border-radius: 40px;
+            font-weight: 800;
+            font-size: 1.1rem;
             cursor: pointer;
             transition: 0.3s;
-            margin-bottom: 10px;
-            border: 1px solid transparent;
+            box-shadow: 0 10px 20px rgba(255,255,255,0.1);
         }
 
-        .season-tab.active {
+        .btn-play:hover {
             background: var(--accent);
-            border-color: var(--accent);
+            color: #fff;
+            transform: scale(1.05);
+            box-shadow: 0 10px 20px rgba(255, 0, 60, 0.3);
         }
 
-        .ep-card {
+        /* EPISODES */
+        .ep-layout { display: grid; grid-template-columns: 200px 1fr; gap: 30px; margin-top: 30px; }
+        
+        .season-btn {
+            padding: 15px;
+            background: var(--glass);
+            margin-bottom: 10px;
+            border-radius: 12px;
+            cursor: pointer;
+            text-align: center;
+            border: 1px solid transparent;
+            transition: 0.3s;
+        }
+        .season-btn.active { background: var(--accent); border-color: var(--accent); }
+
+        .episode-card {
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            padding: 25px;
+            padding: 20px;
             background: var(--glass);
-            border-radius: 20px;
-            margin-bottom: 15px;
+            border-radius: 15px;
+            margin-bottom: 12px;
             cursor: pointer;
             transition: 0.3s;
         }
+        .episode-card:hover { background: rgba(255,255,255,0.08); transform: translateX(10px); }
 
-        .ep-card:hover { background: rgba(255,255,255,0.08); transform: translateX(10px); }
+        /* PLAYER */
+        .player-container {
+            margin-top: 40px;
+            width: 100%;
+            aspect-ratio: 16/9;
+            background: #000;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.8);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        iframe { width: 100%; height: 100%; border: none; }
 
         /* ANIMATIONS */
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(50px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        @media (max-width: 1000px) {
-            .hero { grid-template-columns: 1fr; text-align: center; justify-items: center; }
-            .ep-grid { grid-template-columns: 1fr; }
+        @media (max-width: 800px) {
+            .detail-card { padding: 20px; text-align: center; justify-content: center; }
+            .detail-poster { width: 100%; max-width: 280px; }
+            .ep-layout { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <header id="main-header">
-        <div class="logo">LumoCinema</div>
-    </header>
+    <div class="logo">LumoCinema</div>
 
     <div id="main-screen">
         <div class="grid" id="catalog"></div>
     </div>
 
     <div id="detail-screen">
-        <div class="nav-link" onclick="showMain()">← Вернуться в библиотеку</div>
-        <div class="hero">
-            <img id="det-poster" class="hero-poster" src="" alt="">
-            <div class="hero-info">
+        <div class="btn-back" onclick="showMain()">← Назад в каталог</div>
+        <div class="detail-card">
+            <img id="det-poster" class="detail-poster" src="" alt="">
+            <div class="detail-info">
                 <h2 id="det-title"></h2>
-                <p class="desc" id="det-desc"></p>
-                <button class="play-main-btn" id="action-btn">СМОТРЕТЬ СЕЙЧАС</button>
-                
-                <div id="player-wrapper" class="video-container" style="display: none;">
-                    </div>
+                <p id="det-desc"></p>
+                <button class="btn-play" id="action-btn">СМОТРЕТЬ</button>
+                <div id="video-box" class="player-container" style="display: none;"></div>
             </div>
         </div>
     </div>
 
     <div id="episodes-screen">
-        <div class="nav-link" onclick="showDetail()">← К описанию</div>
-        <h2 id="ep-header-title"></h2>
-        <div class="ep-grid">
+        <div class="btn-back" onclick="showDetail()">← К описанию</div>
+        <h2 id="ep-main-title"></h2>
+        <div class="ep-layout">
             <div id="seasons-nav"></div>
             <div id="ep-list"></div>
         </div>
     </div>
 </div>
 
-<script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
-
 <script>
     const DATABASE = [
       {
         "title": "Ниндзяго: Восстание Драконов",
         "poster": "https://raw.githubusercontent.com/LumoCreator/admincinema/refs/heads/main/IMG_1873.jpeg",
-        "desc": "Мир изменился навсегда после Слияния. Новые ниндзя Сора и Арин под руководством Ллойда должны найти старых мастеров и остановить империю Когтей.",
+        "desc": "События разворачиваются после Великого Слияния. Новые герои Сора и Арин под руководством Ллойда должны спасти миры.",
         "type": "serial",
         "seasons": [
           {
@@ -300,9 +244,6 @@
       }
     ];
 
-    let currentItem = null;
-    let player = null;
-
     function init() {
         const catalog = document.getElementById('catalog');
         catalog.innerHTML = "";
@@ -311,15 +252,17 @@
             card.className = 'card';
             card.onclick = () => openDetail(index);
             card.innerHTML = `
-                <img src="${item.poster}" alt="">
-                <div class="card-overlay">
-                    <div class="card-type">${item.type === 'serial' ? 'Сериал' : 'Фильм'}</div>
-                    <div class="card-title">${item.title}</div>
+                <img src="${item.poster}">
+                <div class="card-info">
+                    <div style="font-size: 0.8rem; color: var(--accent); font-weight: 800;">${item.type === 'serial' ? 'СЕРИАЛ' : 'ФИЛЬМ'}</div>
+                    <div style="font-weight: 800;">${item.title}</div>
                 </div>
             `;
             catalog.appendChild(card);
         });
     }
+
+    let currentItem = null;
 
     function openDetail(index) {
         currentItem = DATABASE[index];
@@ -329,34 +272,33 @@
         document.getElementById('det-poster').src = currentItem.poster;
         document.getElementById('det-desc').innerText = currentItem.desc;
         
-        const btn = document.getElementById('action-btn');
-        const wrapper = document.getElementById('player-wrapper');
-        wrapper.style.display = 'none';
-        wrapper.innerHTML = "";
-        if (player) { player.dispose(); player = null; }
+        const videoBox = document.getElementById('video-box');
+        videoBox.style.display = 'none';
+        videoBox.innerHTML = "";
 
-        btn.onclick = currentItem.type === 'movie' ? () => startVideo(currentItem.url) : openEpisodes;
+        const btn = document.getElementById('action-btn');
+        btn.onclick = currentItem.type === 'movie' ? () => startPlayer(currentItem.url) : openEpisodes;
         btn.innerText = currentItem.type === 'movie' ? 'СМОТРЕТЬ ФИЛЬМ' : 'ВЫБРАТЬ СЕРИЮ';
-        window.scrollTo(0,0);
+        window.scrollTo({top: 0, behavior: 'smooth'});
     }
 
     function openEpisodes() {
         document.getElementById('detail-screen').style.display = 'none';
         document.getElementById('episodes-screen').style.display = 'block';
-        document.getElementById('ep-header-title').innerText = currentItem.title;
+        document.getElementById('ep-main-title').innerText = currentItem.title;
         
         const nav = document.getElementById('seasons-nav');
         nav.innerHTML = "";
         currentItem.seasons.forEach((s, i) => {
-            const div = document.createElement('div');
-            div.className = `season-tab ${i === 0 ? 'active' : ''}`;
-            div.innerText = `Сезон ${s.number}`;
-            div.onclick = () => {
-                document.querySelectorAll('.season-tab').forEach(t => t.classList.remove('active'));
-                div.classList.add('active');
+            const d = document.createElement('div');
+            d.className = `season-btn ${i === 0 ? 'active' : ''}`;
+            d.innerText = `Сезон ${s.number}`;
+            d.onclick = () => {
+                document.querySelectorAll('.season-btn').forEach(t => t.classList.remove('active'));
+                d.classList.add('active');
                 renderEpisodes(i);
             };
-            nav.appendChild(div);
+            nav.appendChild(d);
         });
         renderEpisodes(0);
     }
@@ -364,58 +306,47 @@
     function renderEpisodes(idx) {
         const list = document.getElementById('ep-list');
         list.innerHTML = "";
-        currentItem.seasons[idx].episodes.forEach((ep, i) => {
-            const div = document.createElement('div');
-            div.className = 'ep-card';
-            div.innerHTML = `
-                <div>
-                    <b style="color:var(--accent); margin-right:15px;">${i+1}</b>
-                    <span>${ep.name}</span>
-                </div>
-                <span style="color:var(--text-dim)">${ep.duration}</span>
-            `;
-            div.onclick = () => { showDetail(); startVideo(ep.url); };
-            list.appendChild(div);
+        currentItem.seasons[idx].episodes.forEach(ep => {
+            const d = document.createElement('div');
+            d.className = 'episode-card';
+            d.innerHTML = `<span>${ep.name}</span><span style="color:var(--text-dim)">${ep.duration}</span>`;
+            d.onclick = () => { showDetail(); startPlayer(ep.url); };
+            list.appendChild(d);
         });
     }
 
-    function startVideo(url) {
-        const wrapper = document.getElementById('player-wrapper');
-        wrapper.style.display = 'block';
-        wrapper.innerHTML = `
-            <video id="my-video" class="video-js vjs-big-play-centered" controls preload="auto" width="640" height="264">
-                <source src="${url}" type="video/mp4">
-            </video>
+    function startPlayer(url) {
+        const box = document.getElementById('video-box');
+        box.style.display = 'block';
+        
+        // Магия преобразования ссылки для обхода 404 и блокировки полноэкранного режима
+        let fileId = "";
+        if (url.includes('id=')) {
+            fileId = url.split('id=')[1].split('&')[0];
+        } else {
+            fileId = url.split('/d/')[1].split('/')[0];
+        }
+        
+        const finalUrl = `https://drive.google.com/file/d/${fileId}/preview`;
+
+        // Генерируем iframe с ПРАВИЛЬНЫМИ доступами для полного экрана
+        box.innerHTML = `
+            <iframe 
+                src="${finalUrl}" 
+                allow="autoplay; fullscreen" 
+                allowfullscreen="true" 
+                webkitallowfullscreen="true" 
+                mozallowfullscreen="true">
+            </iframe>
         `;
-
-        player = videojs('my-video', {
-            fluid: true,
-            playbackRates: [0.5, 1, 1.5, 2],
-            controlBar: {
-                children: [
-                    'playToggle',
-                    'volumePanel',
-                    'currentTimeDisplay',
-                    'timeDivider',
-                    'durationDisplay',
-                    'progressControl',
-                    'playbackRateMenuButton',
-                    'fullscreenToggle',
-                ],
-            }
-        });
-
-        player.ready(function() {
-            player.play();
-            wrapper.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        });
+        
+        setTimeout(() => box.scrollIntoView({ behavior: 'smooth', block: 'center' }), 200);
     }
 
     function showMain() {
         document.getElementById('main-screen').style.display = 'block';
         document.getElementById('detail-screen').style.display = 'none';
         document.getElementById('episodes-screen').style.display = 'none';
-        if (player) { player.dispose(); player = null; }
     }
 
     function showDetail() {
