@@ -3,221 +3,290 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LumoCinema — Premium Streaming</title>
-    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;500;800&display=swap" rel="stylesheet">
+    <title>LumoCinema | Ultimate Experience</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700;900&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            --bg: #050506;
-            --accent: #ff003c;
-            --card-bg: #111113;
+            --bg: #030303;
+            --accent: #ff0055;
+            --accent-glow: rgba(255, 0, 85, 0.4);
+            --card-bg: #0f0f11;
+            --text: #ffffff;
             --glass: rgba(255, 255, 255, 0.03);
-            --text-main: #ffffff;
-            --text-dim: #88888e;
+            --border: rgba(255, 255, 255, 0.08);
         }
 
-        * { box-sizing: border-box; }
+        * { 
+            box-sizing: border-box; 
+            -webkit-tap-highlight-color: transparent;
+        }
 
         body {
-            font-family: 'Manrope', sans-serif;
+            font-family: 'Montserrat', sans-serif;
             background-color: var(--bg);
-            color: var(--text-main);
+            color: var(--text);
             margin: 0;
             overflow-x: hidden;
-            background-image: radial-gradient(circle at 50% -20%, #1e1e2e 0%, #050506 100%);
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(255, 0, 85, 0.05) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(0, 100, 255, 0.05) 0%, transparent 40%);
         }
 
         .container {
-            max-width: 1300px;
+            max-width: 1400px;
             margin: 0 auto;
             padding: 40px 20px;
         }
 
-        /* LOGO */
-        .logo {
-            font-size: 2.2rem;
-            font-weight: 800;
+        /* HEADER */
+        header {
             text-align: center;
-            margin-bottom: 50px;
-            letter-spacing: -1.5px;
-            background: linear-gradient(90deg, #fff, var(--accent));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: fadeInDown 0.8s ease;
+            margin-bottom: 60px;
+            animation: fadeInDown 1s ease;
         }
 
-        /* GRID */
+        .logo {
+            font-size: 3rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            background: linear-gradient(to right, #fff, var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 15px var(--accent-glow));
+        }
+
+        /* КАТАЛОГ */
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-            gap: 35px;
-            animation: fadeInUp 1s ease;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 40px;
+            animation: fadeInUp 1s ease-out;
         }
 
         .card {
+            position: relative;
             background: var(--card-bg);
-            border-radius: 20px;
+            border-radius: 24px;
             overflow: hidden;
             cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-            border: 1px solid rgba(255,255,255,0.05);
-            position: relative;
+            transition: all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+            border: 1px solid var(--border);
         }
 
         .card:hover {
-            transform: translateY(-10px) scale(1.02);
+            transform: translateY(-15px) scale(1.03);
             border-color: var(--accent);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.6), 0 0 15px rgba(255, 0, 60, 0.2);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.8), 0 0 20px var(--accent-glow);
         }
 
         .card img {
             width: 100%;
-            height: 330px;
+            height: 380px;
             object-fit: cover;
-            transition: 0.4s;
+            transition: 0.5s;
+        }
+
+        .card:hover img {
+            filter: scale(1.1) brightness(0.5);
         }
 
         .card-info {
-            padding: 15px;
-            background: linear-gradient(0deg, rgba(0,0,0,0.9) 0%, transparent 100%);
             position: absolute;
-            bottom: 0; width: 100%;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 30px 20px 20px;
+            background: linear-gradient(to top, rgba(0,0,0,1) 0%, transparent 100%);
         }
 
-        /* SCREENS */
-        #detail-screen, #episodes-screen { display: none; animation: fadeIn 0.5s ease; }
+        .card-info h3 { margin: 0; font-size: 1.3rem; }
+        .card-info span { color: var(--accent); font-size: 0.8rem; font-weight: 700; text-transform: uppercase; }
 
-        .btn-back {
-            color: var(--text-dim);
+        /* ЭКРАНЫ */
+        #detail-screen, #episodes-screen { 
+            display: none; 
+            animation: fadeIn 0.6s ease;
+        }
+
+        .back-nav {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
             cursor: pointer;
-            margin-bottom: 25px;
-            display: inline-block;
+            color: #888;
+            margin-bottom: 30px;
             transition: 0.3s;
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
         }
-        .btn-back:hover { color: #fff; transform: translateX(-5px); }
 
-        /* DETAIL PAGE */
-        .detail-card {
+        .back-nav:hover { color: var(--accent); transform: translateX(-5px); }
+
+        /* ДЕТАЛИ */
+        .hero-section {
             display: flex;
-            gap: 50px;
+            gap: 60px;
             background: var(--glass);
-            padding: 40px;
-            border-radius: 30px;
+            padding: 50px;
+            border-radius: 40px;
             backdrop-filter: blur(20px);
-            border: 1px solid rgba(255,255,255,0.05);
+            border: 1px solid var(--border);
             flex-wrap: wrap;
         }
 
-        .detail-poster {
-            width: 320px;
-            border-radius: 20px;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+        .poster-large {
+            width: 380px;
+            border-radius: 30px;
+            box-shadow: 0 40px 80px rgba(0,0,0,0.7);
+            animation: fadeInLeft 0.8s ease;
         }
 
-        .detail-info { flex: 1; min-width: 300px; }
-        .detail-info h2 { font-size: 2.8rem; margin: 0; }
-        .detail-info p { color: var(--text-dim); line-height: 1.7; margin: 25px 0; font-size: 1.1rem; }
+        .content-area { flex: 1; min-width: 350px; }
+        .content-area h2 { font-size: 3.5rem; margin: 0; font-weight: 900; line-height: 1; }
+        .content-area .description { font-size: 1.2rem; color: #bbb; line-height: 1.8; margin: 30px 0; }
 
-        .btn-play {
-            padding: 18px 45px;
-            background: #fff;
-            color: #000;
-            border: none;
-            border-radius: 40px;
-            font-weight: 800;
-            font-size: 1.1rem;
-            cursor: pointer;
-            transition: 0.3s;
-            box-shadow: 0 10px 20px rgba(255,255,255,0.1);
-        }
-
-        .btn-play:hover {
+        .play-btn {
             background: var(--accent);
-            color: #fff;
-            transform: scale(1.05);
-            box-shadow: 0 10px 20px rgba(255, 0, 60, 0.3);
-        }
-
-        /* EPISODES */
-        .ep-layout { display: grid; grid-template-columns: 200px 1fr; gap: 30px; margin-top: 30px; }
-        
-        .season-btn {
-            padding: 15px;
-            background: var(--glass);
-            margin-bottom: 10px;
-            border-radius: 12px;
+            color: white;
+            border: none;
+            padding: 22px 60px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 900;
             cursor: pointer;
-            text-align: center;
-            border: 1px solid transparent;
-            transition: 0.3s;
+            transition: 0.4s;
+            box-shadow: 0 15px 30px var(--accent-glow);
+            text-transform: uppercase;
         }
-        .season-btn.active { background: var(--accent); border-color: var(--accent); }
 
-        .episode-card {
-            display: flex;
-            justify-content: space-between;
-            padding: 20px;
-            background: var(--glass);
-            border-radius: 15px;
-            margin-bottom: 12px;
-            cursor: pointer;
-            transition: 0.3s;
+        .play-btn:hover {
+            transform: scale(1.05) translateY(-5px);
+            box-shadow: 0 20px 40px var(--accent-glow);
+            background: #ff2b6d;
         }
-        .episode-card:hover { background: rgba(255,255,255,0.08); transform: translateX(10px); }
 
-        /* PLAYER */
-        .player-container {
-            margin-top: 40px;
+        /* ПЛЕЕР */
+        .player-wrapper {
+            margin-top: 50px;
             width: 100%;
             aspect-ratio: 16/9;
             background: #000;
-            border-radius: 20px;
+            border-radius: 30px;
             overflow: hidden;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.8);
-            border: 1px solid rgba(255,255,255,0.1);
+            border: 1px solid var(--border);
+            box-shadow: 0 50px 100px rgba(0,0,0,0.9);
         }
-        iframe { width: 100%; height: 100%; border: none; }
 
-        /* ANIMATIONS */
-        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        /* ТУТ МАГИЯ ДЛЯ ПОЛНОГО ЭКРАНА */
+        iframe { 
+            width: 100%; 
+            height: 100%; 
+            border: none; 
+        }
+
+        /* СПИСОК СЕРИЙ */
+        .ep-grid {
+            display: grid;
+            grid-template-columns: 240px 1fr;
+            gap: 40px;
+            margin-top: 20px;
+        }
+
+        .season-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .season-card {
+            padding: 20px;
+            background: var(--glass);
+            border-radius: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.3s;
+            font-weight: 700;
+            border: 1px solid var(--border);
+        }
+
+        .season-card.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            box-shadow: 0 10px 20px var(--accent-glow);
+        }
+
+        .episodes-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .ep-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 25px 35px;
+            background: var(--glass);
+            border-radius: 20px;
+            cursor: pointer;
+            transition: 0.3s;
+            border: 1px solid transparent;
+        }
+
+        .ep-row:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: var(--border);
+            transform: translateX(10px);
+        }
+
+        /* АНИМАЦИИ */
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-40px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeInLeft { from { opacity: 0; transform: translateX(-40px); } to { opacity: 1; transform: translateX(0); } }
 
-        @media (max-width: 800px) {
-            .detail-card { padding: 20px; text-align: center; justify-content: center; }
-            .detail-poster { width: 100%; max-width: 280px; }
-            .ep-layout { grid-template-columns: 1fr; }
+        @media (max-width: 900px) {
+            .hero-section { padding: 30px; gap: 30px; }
+            .poster-large { width: 100%; }
+            .ep-grid { grid-template-columns: 1fr; }
+            .content-area h2 { font-size: 2.2rem; }
         }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <div class="logo">LumoCinema</div>
+    <header>
+        <div class="logo">LumoCinema</div>
+    </header>
 
     <div id="main-screen">
-        <div class="grid" id="catalog"></div>
+        <div class="grid" id="catalog-grid"></div>
     </div>
 
     <div id="detail-screen">
-        <div class="btn-back" onclick="showMain()">← Назад в каталог</div>
-        <div class="detail-card">
-            <img id="det-poster" class="detail-poster" src="" alt="">
-            <div class="detail-info">
-                <h2 id="det-title"></h2>
-                <p id="det-desc"></p>
-                <button class="btn-play" id="action-btn">СМОТРЕТЬ</button>
-                <div id="video-box" class="player-container" style="display: none;"></div>
+        <div class="back-nav" onclick="toMain()">← Вернуться в библиотеку</div>
+        <div class="hero-section">
+            <img id="d-poster" class="poster-large" src="" alt="">
+            <div class="content-area">
+                <h2 id="d-title"></h2>
+                <p class="description" id="d-desc"></p>
+                <button class="play-btn" id="d-action-btn">Смотреть сейчас</button>
+                <div id="player-container" class="player-wrapper" style="display: none;"></div>
             </div>
         </div>
     </div>
 
     <div id="episodes-screen">
-        <div class="btn-back" onclick="showDetail()">← К описанию</div>
-        <h2 id="ep-main-title"></h2>
-        <div class="ep-layout">
-            <div id="seasons-nav"></div>
-            <div id="ep-list"></div>
+        <div class="back-nav" onclick="toDetail()">← Назад к описанию</div>
+        <h2 id="ep-main-name" style="font-size: 2.5rem; margin-bottom: 40px;"></h2>
+        <div class="ep-grid">
+            <div id="season-nav" class="season-list"></div>
+            <div id="ep-list" class="episodes-list"></div>
         </div>
     </div>
 </div>
@@ -227,7 +296,7 @@
       {
         "title": "Ниндзяго: Восстание Драконов",
         "poster": "https://raw.githubusercontent.com/LumoCreator/admincinema/refs/heads/main/IMG_1873.jpeg",
-        "desc": "События разворачиваются после Великого Слияния. Новые герои Сора и Арин под руководством Ллойда должны спасти миры.",
+        "desc": "Легендарная сага продолжается. После Великого Слияния миры объединились в один. Новые герои Сора и Арин должны найти Ллойда и остальных ниндзя, чтобы противостоять Империуму.",
         "type": "serial",
         "seasons": [
           {
@@ -244,57 +313,59 @@
       }
     ];
 
+    let currentItem = null;
+
     function init() {
-        const catalog = document.getElementById('catalog');
-        catalog.innerHTML = "";
+        const grid = document.getElementById('catalog-grid');
+        grid.innerHTML = "";
         DATABASE.forEach((item, index) => {
-            const card = document.createElement('div');
-            card.className = 'card';
-            card.onclick = () => openDetail(index);
-            card.innerHTML = `
+            const el = document.createElement('div');
+            el.className = 'card';
+            el.onclick = () => openInfo(index);
+            el.innerHTML = `
                 <img src="${item.poster}">
                 <div class="card-info">
-                    <div style="font-size: 0.8rem; color: var(--accent); font-weight: 800;">${item.type === 'serial' ? 'СЕРИАЛ' : 'ФИЛЬМ'}</div>
-                    <div style="font-weight: 800;">${item.title}</div>
+                    <span>${item.type === 'serial' ? 'Сериал' : 'Фильм'}</span>
+                    <h3>${item.title}</h3>
                 </div>
             `;
-            catalog.appendChild(card);
+            grid.appendChild(el);
         });
     }
 
-    let currentItem = null;
-
-    function openDetail(index) {
-        currentItem = DATABASE[index];
+    function openInfo(idx) {
+        currentItem = DATABASE[idx];
         document.getElementById('main-screen').style.display = 'none';
         document.getElementById('detail-screen').style.display = 'block';
-        document.getElementById('det-title').innerText = currentItem.title;
-        document.getElementById('det-poster').src = currentItem.poster;
-        document.getElementById('det-desc').innerText = currentItem.desc;
         
-        const videoBox = document.getElementById('video-box');
-        videoBox.style.display = 'none';
-        videoBox.innerHTML = "";
+        document.getElementById('d-title').innerText = currentItem.title;
+        document.getElementById('d-poster').src = currentItem.poster;
+        document.getElementById('d-desc').innerText = currentItem.desc;
+        
+        const btn = document.getElementById('d-action-btn');
+        const playerBox = document.getElementById('player-container');
+        playerBox.style.display = 'none';
+        playerBox.innerHTML = "";
 
-        const btn = document.getElementById('action-btn');
-        btn.onclick = currentItem.type === 'movie' ? () => startPlayer(currentItem.url) : openEpisodes;
-        btn.innerText = currentItem.type === 'movie' ? 'СМОТРЕТЬ ФИЛЬМ' : 'ВЫБРАТЬ СЕРИЮ';
+        btn.innerText = currentItem.type === 'movie' ? 'Воспроизвести' : 'Выбрать сезон и серию';
+        btn.onclick = currentItem.type === 'movie' ? () => loadVideo(currentItem.url) : openSeasons;
+        
         window.scrollTo({top: 0, behavior: 'smooth'});
     }
 
-    function openEpisodes() {
+    function openSeasons() {
         document.getElementById('detail-screen').style.display = 'none';
         document.getElementById('episodes-screen').style.display = 'block';
-        document.getElementById('ep-main-title').innerText = currentItem.title;
+        document.getElementById('ep-main-name').innerText = currentItem.title;
         
-        const nav = document.getElementById('seasons-nav');
+        const nav = document.getElementById('season-nav');
         nav.innerHTML = "";
         currentItem.seasons.forEach((s, i) => {
             const d = document.createElement('div');
-            d.className = `season-btn ${i === 0 ? 'active' : ''}`;
-            d.innerText = `Сезон ${s.number}`;
+            d.className = `season-card ${i === 0 ? 'active' : ''}`;
+            d.innerText = `СЕЗОН ${s.number}`;
             d.onclick = () => {
-                document.querySelectorAll('.season-btn').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.season-card').forEach(c => c.classList.remove('active'));
                 d.classList.add('active');
                 renderEpisodes(i);
             };
@@ -303,58 +374,63 @@
         renderEpisodes(0);
     }
 
-    function renderEpisodes(idx) {
+    function renderEpisodes(sIdx) {
         const list = document.getElementById('ep-list');
         list.innerHTML = "";
-        currentItem.seasons[idx].episodes.forEach(ep => {
+        currentItem.seasons[sIdx].episodes.forEach((ep, i) => {
             const d = document.createElement('div');
-            d.className = 'episode-card';
-            d.innerHTML = `<span>${ep.name}</span><span style="color:var(--text-dim)">${ep.duration}</span>`;
-            d.onclick = () => { showDetail(); startPlayer(ep.url); };
+            d.className = 'ep-row';
+            d.innerHTML = `
+                <div style="display:flex; align-items:center; gap:20px;">
+                    <span style="color:var(--accent); font-weight:900;">${i+1}</span>
+                    <span style="font-weight:700;">${ep.name}</span>
+                </div>
+                <span style="color:#666;">${ep.duration}</span>
+            `;
+            d.onclick = () => { toDetail(); loadVideo(ep.url); };
             list.appendChild(d);
         });
     }
 
-    function startPlayer(url) {
-        const box = document.getElementById('video-box');
+    function loadVideo(url) {
+        const box = document.getElementById('player-container');
         box.style.display = 'block';
         
-        // Магия преобразования ссылки для обхода 404 и блокировки полноэкранного режима
-        let fileId = "";
-        if (url.includes('id=')) {
-            fileId = url.split('id=')[1].split('&')[0];
-        } else {
-            fileId = url.split('/d/')[1].split('/')[0];
-        }
+        // Получаем ID файла и создаем ссылку
+        let id = "";
+        if(url.includes('id=')) id = url.split('id=')[1].split('&')[0];
+        else id = url.split('/d/')[1].split('/')[0];
         
-        const finalUrl = `https://drive.google.com/file/d/${fileId}/preview`;
+        const finalUrl = `https://drive.google.com/file/d/${id}/preview`;
 
-        // Генерируем iframe с ПРАВИЛЬНЫМИ доступами для полного экрана
+        // КРИТИЧЕСКИЙ МОМЕНТ: allowfullscreen + sandbox
         box.innerHTML = `
             <iframe 
                 src="${finalUrl}" 
-                allow="autoplay; fullscreen" 
+                allow="autoplay; fullscreen; xr-spatial-tracking"
+                sandbox="allow-forms allow-scripts allow-pointer-lock allow-same-origin allow-top-navigation allow-presentation"
                 allowfullscreen="true" 
                 webkitallowfullscreen="true" 
                 mozallowfullscreen="true">
             </iframe>
         `;
         
-        setTimeout(() => box.scrollIntoView({ behavior: 'smooth', block: 'center' }), 200);
+        setTimeout(() => box.scrollIntoView({ behavior: 'smooth', block: 'center' }), 300);
     }
 
-    function showMain() {
+    function toMain() {
         document.getElementById('main-screen').style.display = 'block';
         document.getElementById('detail-screen').style.display = 'none';
-        document.getElementById('episodes-screen').style.display = 'none';
+        document.getElementById('player-container').innerHTML = "";
     }
 
-    function showDetail() {
+    function toDetail() {
         document.getElementById('detail-screen').style.display = 'block';
         document.getElementById('episodes-screen').style.display = 'none';
     }
 
     window.onload = init;
 </script>
+
 </body>
 </html>
