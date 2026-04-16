@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MyCinema - Онлайн Кинотеатр</title>
+    <style>
+        :root {
+            --bg: #0f0f0f;
+            --text: #ffffff;
+            --accent: #ffffff;
+            --card-bg: #1e1e1e;
+        }
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 20px;
+        }
+        h1 { text-align: center; }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .card {
+            background: var(--card-bg);
+            border-radius: 10px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .card:hover { transform: scale(1.05); }
+        .card img { width: 100%; height: 260px; object-fit: cover; }
+        .card-info { padding: 10px; text-align: center; font-weight: bold; }
+
+        /* Экран деталей */
+        #detail-screen, #episodes-screen {
+            display: none;
+            max-width: 900px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 15px;
+        }
+        .detail-header { display: flex; gap: 30px; }
+        .detail-poster { width: 250px; border-radius: 10px; }
+        .detail-info { flex: 1; }
+        .desc { margin: 20px 0; color: #ccc; line-height: 1.6; }
+        
+        .btn {
+            background: white;
+            color: black;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        /* Список серий */
+        .episodes-container { display: flex; gap: 20px; margin-top: 20px; }
+        .seasons-list { width: 150px; border-right: 1px solid #444; }
+        .season-item { padding: 10px; cursor: pointer; }
+        .season-item.active { font-weight: bold; text-decoration: underline; }
+        .episodes-list { flex: 1; }
+        .episode-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px;
+            border-bottom: 1px solid #333;
+            cursor: pointer;
+        }
+        .episode-row:hover { background: #2a2a2a; }
+
+        video { width: 100%; border-radius: 10px; margin-top: 20px; background: black; }
+        .back-btn { margin-bottom: 20px; cursor: pointer; color: #aaa; }
+    </style>
+</head>
+<body>
+
+<div id="main-screen">
+    <h1>Моя Коллекция</h1>
+    <div class="grid" id="catalog"></div>
+</div>
+
+<div id="detail-screen">
+    <div class="back-btn" onclick="showMain()">← Назад</div>
+    <div class="detail-header">
+        <img id="det-poster" class="detail-poster" src="" alt="">
+        <div class="detail-info">
+            <h2 id="det-title"></h2>
+            <p class="desc" id="det-desc"></p>
+            <button class="btn" id="action-btn"></button>
+        </div>
+    </div>
+    <video id="player" controls style="display:none"></video>
+</div>
+
+<div id="episodes-screen">
+    <div class="back-btn" onclick="showDetail()">← К описанию</div>
+    <h2 id="ep-title-head"></h2>
+    <div class="episodes-container">
+        <div class="seasons-list" id="seasons-nav"></div>
+        <div class="episodes-list" id="episodes-nav"></div>
+    </div>
+</div>
+
+<script>
+    // СЮДА ВСТАВЛЯТЬ СГЕНЕРИРОВАННЫЙ КОД
+    const DATABASE = []; 
+
+    let currentItem = null;
+
+    function init() {
+        const catalog = document.getElementById('catalog');
+        DATABASE.forEach((item, index) => {
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.onclick = () => openDetail(index);
+            card.innerHTML = `
+                <img src="${item.poster || '?'}" alt="">
+                <div class="card-info">${item.title || '?'}</div>
+            `;
+            catalog.appendChild(card);
+        });
+    }
+
+    function openDetail(index) {
+        currentItem = DATABASE[index];
+        document.getElementById('main-screen').style.display = 'none';
+        document.getElementById('detail-screen').style.display = 'block';
+        document.getElementById('episodes-screen').style.display = 'none';
+        
+        document.getElementById('det-poster').src = currentItem.poster || '';
+        document.getElementById('det-title').innerText = currentItem.title || '?';
+        document.getElementById('det-desc').innerText = currentItem.desc || '?';
+        
+        const btn = document.getElementById('action-btn');
+        const player = document.getElementById('player');
+        player.style.display = 'none';
+        player.src = '';
+
+        if (currentItem.type === 'movie') {
+            btn.innerText = 'Воспроизвести';
+            btn.onclick = () => {
+                player.style.display = 'block';
+                player.src = currentItem.url || '';
+                player.play();
+            };
+        } else {
+            btn.innerText = 'Выбрать сезон и серию';
+            btn.onclick = openEpisodes;
+        }
+    }
+
+    function openEpisodes() {
+        document.getElementById('detail-screen').style.display = 'none';
+        document.getElementById('episodes-screen').style.display = 'block';
+        document.getElementById('ep-title-head').innerText = currentItem.title;
+        renderSeasons();
+    }
+
+    function renderSeasons() {
+        const nav = document.getElementById('seasons-nav');
+        nav.innerHTML = '';
+        currentItem.seasons.forEach((s, i) => {
+            const div = document.createElement('div');
+            div.className = 'season-item';
+            div.innerText = `Сезон ${s.number || '?'}`;
+            div.onclick = () => renderEpisodes(i);
+            nav.appendChild(div);
+        });
+        if (currentItem.seasons.length > 0) renderEpisodes(0);
+    }
+
+    function renderEpisodes(sIndex) {
+        const nav = document.getElementById('episodes-nav');
+        nav.innerHTML = '';
+        const episodes = currentItem.seasons[sIndex].episodes;
+        episodes.forEach(ep => {
+            const row = document.createElement('div');
+            row.className = 'episode-row';
+            row.innerHTML = `
+                <span>${ep.name || '?'}</span>
+                <span style="color:#888">${ep.duration || '?'}</span>
+            `;
+            row.onclick = () => playVideo(ep.url);
+            nav.appendChild(row);
+        });
+    }
+
+    function playVideo(url) {
+        if (!url) { alert('Ссылка отсутствует!'); return; }
+        document.getElementById('episodes-screen').style.display = 'none';
+        document.getElementById('detail-screen').style.display = 'block';
+        const player = document.getElementById('player');
+        player.style.display = 'block';
+        player.src = url;
+        player.play();
+    }
+
+    function showMain() {
+        document.getElementById('main-screen').style.display = 'block';
+        document.getElementById('detail-screen').style.display = 'none';
+        document.getElementById('player').pause();
+    }
+
+    function showDetail() {
+        document.getElementById('episodes-screen').style.display = 'none';
+        document.getElementById('detail-screen').style.display = 'block';
+    }
+
+    init();
+</script>
+</body>
+</html>
