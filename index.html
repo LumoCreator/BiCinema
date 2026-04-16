@@ -4,21 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>BiCinema Premium</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            --orange: #ff8c00;
+            --accent: #ff8c00;
             --bg: #000000;
-            --surface: #121212;
+            --surface: #111111;
             --text: #ffffff;
-            --text-gray: #888888;
+            --text-dim: #999999;
+            --radius: 16px;
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
+        * { 
+            box-sizing: border-box; 
+            margin: 0; padding: 0; 
             -webkit-tap-highlight-color: transparent;
         }
 
@@ -26,7 +26,8 @@
             font-family: 'Inter', sans-serif;
             background-color: var(--bg);
             color: var(--text);
-            line-height: 1.4;
+            line-height: 1.5;
+            -webkit-user-select: none;
         }
 
         .container {
@@ -35,52 +36,51 @@
             padding: 0 15px;
         }
 
-        /* HEADER */
         header {
-            padding: 25px 0;
+            padding: 30px 0;
             text-align: center;
-            border-bottom: 1px solid #1a1a1a;
-            margin-bottom: 20px;
         }
 
         .logo {
-            font-size: 1.8rem;
+            font-size: 2.2rem;
             font-weight: 900;
-            color: var(--orange);
+            color: var(--accent);
             text-transform: uppercase;
-            letter-spacing: -0.5px;
+            letter-spacing: -1.5px;
         }
 
         /* КАТАЛОГ */
-        .catalog {
+        .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
             gap: 20px;
+            padding-bottom: 40px;
         }
 
         .card {
             background: var(--surface);
-            border-radius: 12px;
+            border-radius: var(--radius);
             overflow: hidden;
-            transition: 0.3s;
             cursor: pointer;
-            border: 1px solid #222;
+            transition: 0.3s;
+            border: 1px solid rgba(255,255,255,0.05);
         }
 
-        .card:active { transform: scale(0.95); }
+        .card:active { transform: scale(0.96); }
 
         .card img {
             width: 100%;
             aspect-ratio: 2/3;
             object-fit: cover;
+            display: block;
         }
 
-        .card-info { padding: 10px; }
-        .card-title { font-size: 0.9rem; font-weight: 600; }
+        .card-info { padding: 12px; }
+        .card-title { font-size: 0.9rem; font-weight: 700; }
 
         /* ЭКРАНЫ */
-        .page { display: none; padding-bottom: 40px; }
-        .page.active { display: block; animation: fadeIn 0.3s ease; }
+        .page { display: none; animation: fadeIn 0.4s ease; }
+        .page.active { display: block; }
 
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
@@ -88,35 +88,37 @@
             background: #1a1a1a;
             border: none;
             color: #fff;
-            padding: 10px 15px;
-            border-radius: 8px;
+            padding: 12px 20px;
+            border-radius: 10px;
             margin: 15px 0;
-            font-weight: 600;
+            font-weight: 700;
             cursor: pointer;
         }
 
         /* ДЕТАЛИ */
-        .hero {
+        .detail-view {
             display: flex;
             flex-direction: column;
             gap: 20px;
         }
 
-        .hero img {
+        .hero-poster {
             width: 100%;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            max-width: 320px;
+            border-radius: var(--radius);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+            margin: 0 auto;
         }
 
-        .hero-text h1 { font-size: 1.8rem; margin-bottom: 10px; }
-        .hero-text p { color: var(--text-gray); font-size: 0.95rem; margin-bottom: 20px; }
+        .hero-text h1 { font-size: 2rem; margin-bottom: 10px; }
+        .hero-text p { color: var(--text-dim); margin-bottom: 25px; }
 
-        .btn-play {
+        .btn-main {
             width: 100%;
             padding: 18px;
-            background: var(--orange);
+            background: var(--accent);
             border: none;
-            border-radius: 12px;
+            border-radius: var(--radius);
             color: #000;
             font-weight: 900;
             font-size: 1rem;
@@ -124,52 +126,51 @@
             cursor: pointer;
         }
 
-        /* ПЛЕЕР: ИСПРАВЛЕНИЕ ДЛЯ АЙФОНА */
-        .player-box {
-            position: relative;
+        /* ПЛЕЕР (ИСПРАВЛЕННЫЙ) */
+        .player-wrapper {
+            margin-top: 25px;
             width: 100%;
-            padding-top: 56.25%; /* 16:9 */
             background: #000;
-            border-radius: 12px;
+            border-radius: var(--radius);
             overflow: hidden;
-            margin-top: 20px;
-            border: 1px solid #333;
+            position: relative;
+            padding-top: 56.25%; /* 16:9 */
+            border: 1px solid #222;
         }
 
-        .player-box iframe {
+        iframe {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
             border: none;
-            /* Предотвращаем конфликты с системными жестами */
-            touch-action: manipulation;
         }
 
-        /* СПИСОК СЕРИЙ */
+        /* СЕРИИ */
         .ep-list {
-            margin-top: 20px;
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 12px;
+            margin-top: 20px;
         }
 
-        .ep-item {
+        .ep-row {
             background: var(--surface);
-            padding: 15px;
-            border-radius: 10px;
+            padding: 18px;
+            border-radius: 12px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             cursor: pointer;
+            border: 1px solid transparent;
         }
 
-        .ep-item:hover { background: #222; }
+        .ep-row:active { border-color: var(--accent); background: #1a1a1a; }
+        .ep-name { font-weight: 700; }
+        .ep-time { color: var(--accent); font-weight: 900; font-size: 0.8rem; }
 
         @media (min-width: 768px) {
-            .hero { flex-direction: row; gap: 40px; }
-            .hero img { width: 300px; }
+            .detail-view { flex-direction: row; gap: 40px; align-items: flex-start; }
+            .hero-poster { margin: 0; }
         }
     </style>
 </head>
@@ -178,40 +179,39 @@
 <div class="container">
     <header><div class="logo">BiCinema</div></header>
 
-    <div id="page-main" class="page active">
-        <div class="catalog" id="catalog-container"></div>
+    <div id="p-main" class="page active">
+        <div class="grid" id="catalog-grid"></div>
     </div>
 
-    <div id="page-detail" class="page">
-        <button class="btn-back" onclick="goPage('page-main')">← Назад</button>
-        <div class="hero">
-            <img id="det-img" src="" alt="">
+    <div id="p-item" class="page">
+        <button class="btn-back" onclick="nav('p-main')">← Назад</button>
+        <div class="detail-view">
+            <img id="m-img" src="" class="hero-poster" alt="">
             <div class="hero-text">
-                <h1 id="det-title"></h1>
-                <p id="det-desc"></p>
-                <button class="btn-play" id="btn-action">СМОТРЕТЬ</button>
-                <div id="player-wrap" class="player-box" style="display: none;"></div>
+                <h1 id="m-title"></h1>
+                <p id="m-desc"></p>
+                <button class="btn-main" id="m-btn">СМОТРЕТЬ</button>
+                <div id="player-container" class="player-wrapper" style="display: none;"></div>
             </div>
         </div>
     </div>
 
-    <div id="page-episodes" class="page">
-        <button class="btn-back" onclick="goPage('page-detail')">← К описанию</button>
-        <h2 id="ep-title"></h2>
-        <div class="ep-list" id="ep-container"></div>
+    <div id="p-eps" class="page">
+        <button class="btn-back" onclick="nav('p-item')">← К описанию</button>
+        <h2 id="eps-title" style="margin-bottom: 20px;"></h2>
+        <div class="ep-list" id="eps-list"></div>
     </div>
 </div>
 
 <script>
-    const DATA = [
+    const DB = [
       {
         "title": "Ниндзяго: Восстание Драконов",
         "poster": "https://raw.githubusercontent.com/LumoCreator/admincinema/refs/heads/main/IMG_1873.jpeg",
-        "desc": "Объединенные земли после Слияния нуждаются в героях. Сора и Арин под руководством Ллойда должны спасти мир.",
+        "desc": "Миры слились воедино. Новые герои должны научиться силе стихий, чтобы спасти будущее от захватчиков.",
         "type": "serial",
         "seasons": [
           {
-            "num": "4",
             "eps": [
               { "name": "Шепчущий дракон", "time": "23:00", "url": "https://drive.google.com/uc?export=download&id=1qM4uZ1F4V148msGgrzvJGd8cF2iSAHpt" }
             ]
@@ -221,79 +221,79 @@
     ];
 
     function init() {
-        const cont = document.getElementById('catalog-container');
-        cont.innerHTML = "";
-        DATA.forEach((item, i) => {
+        const grid = document.getElementById('catalog-grid');
+        grid.innerHTML = "";
+        DB.forEach((item, i) => {
             const el = document.createElement('div');
             el.className = 'card';
-            el.onclick = () => openItem(i);
+            el.onclick = () => showItem(i);
             el.innerHTML = `<img src="${item.poster}"><div class="card-info"><div class="card-title">${item.title}</div></div>`;
-            cont.appendChild(el);
+            grid.appendChild(el);
         });
     }
 
-    let cur = null;
+    let currentItem = null;
 
-    function openItem(i) {
-        cur = DATA[i];
-        document.getElementById('det-title').innerText = cur.title;
-        document.getElementById('det-img').src = cur.poster;
-        document.getElementById('det-desc').innerText = cur.desc;
+    function showItem(i) {
+        currentItem = DB[i];
+        document.getElementById('m-title').innerText = currentItem.title;
+        document.getElementById('m-img').src = currentItem.poster;
+        document.getElementById('m-desc').innerText = currentItem.desc;
         
-        document.getElementById('player-wrap').style.display = 'none';
-        document.getElementById('player-wrap').innerHTML = "";
+        const playerWrap = document.getElementById('player-container');
+        playerWrap.style.display = 'none';
+        playerWrap.innerHTML = "";
 
-        const btn = document.getElementById('btn-action');
-        if(cur.type === 'movie') {
+        const btn = document.getElementById('m-btn');
+        if(currentItem.type === 'movie') {
             btn.innerText = "Смотреть фильм";
-            btn.onclick = () => start(cur.url);
+            btn.onclick = () => startPlayer(currentItem.url);
         } else {
             btn.innerText = "Выбрать серию";
-            btn.onclick = openEps;
+            btn.onclick = showEps;
         }
-        goPage('page-detail');
+        nav('p-item');
     }
 
-    function openEps() {
-        document.getElementById('ep-title').innerText = cur.title;
-        const cont = document.getElementById('ep-container');
-        cont.innerHTML = "";
-        cur.seasons[0].eps.forEach(ep => {
-            const el = document.createElement('div');
-            el.className = 'ep-item';
-            el.innerHTML = `<span>${ep.name}</span><span style="color:var(--orange)">${ep.time}</span>`;
-            el.onclick = () => { goPage('page-detail'); start(ep.url); };
-            cont.appendChild(el);
+    function showEps() {
+        document.getElementById('eps-title').innerText = currentItem.title;
+        const list = document.getElementById('eps-list');
+        list.innerHTML = "";
+        currentItem.seasons[0].eps.forEach(ep => {
+            const row = document.createElement('div');
+            row.className = 'ep-row';
+            row.innerHTML = `<span class="ep-name">${ep.name}</span><span class="ep-time">${ep.time}</span>`;
+            row.onclick = () => { nav('p-item'); startPlayer(ep.url); };
+            list.appendChild(row);
         });
-        goPage('page-episodes');
+        nav('p-eps');
     }
 
-    function start(url) {
-        const wrap = document.getElementById('player-wrap');
+    function startPlayer(url) {
+        const wrap = document.getElementById('player-container');
         wrap.style.display = 'block';
         
         let id = "";
         if(url.includes('id=')) id = url.split('id=')[1].split('&')[0];
         else id = url.split('/d/')[1].split('/')[0];
         
-        const driveUrl = `https://drive.google.com/file/d/${id}/preview`;
+        const finalUrl = `https://drive.google.com/file/d/${id}/preview`;
 
-        // КЛЮЧЕВОЙ МОМЕНТ: playsinline для iOS и очистка атрибутов
+        // КЛЮЧЕВОЙ МОМЕНТ: allow="fullscreen"
         wrap.innerHTML = `
             <iframe 
-                src="${driveUrl}" 
-                allow="autoplay; fullscreen"
-                allowfullscreen="true"
-                webkitallowfullscreen="true"
-                mozallowfullscreen="true"
-                playsinline="1">
+                src="${finalUrl}" 
+                allow="autoplay; fullscreen; picture-in-picture; xr-spatial-tracking"
+                allowfullscreen="true" 
+                webkitallowfullscreen="true" 
+                mozallowfullscreen="true">
             </iframe>
         `;
         
-        wrap.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        setTimeout(() => wrap.scrollIntoView({ behavior: 'smooth', block: 'center' }), 300);
     }
 
-    function goPage(id) {
+    function nav(id) {
         document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
         document.getElementById(id).classList.add('active');
         window.scrollTo(0,0);
